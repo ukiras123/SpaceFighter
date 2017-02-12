@@ -19,14 +19,16 @@ public class Controller {
 
 	private Texture tex;
 	Random r = new Random();
+	private Game game;
 
-	public Controller(Texture tex) {
+	public Controller(Texture tex, Game game) {
 		this.tex = tex;
+		this.game = game;
 	}
 
 	public void createEnemy(int eneny_count) {
 		for (int i = 0; i < eneny_count; i++) {
-			addEntity(new Enemy(r.nextInt(640), -10, tex));
+			addEntity(new Enemy(r.nextInt(640), -10, tex, this, game));
 		}
 	}
 
