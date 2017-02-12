@@ -6,68 +6,51 @@ import java.util.Random;
 
 public class Controller {
 
-	private LinkedList<Bullet> b = new LinkedList<Bullet>();
-	private LinkedList<Enemy> e = new LinkedList<Enemy>();
+	private LinkedList<Entity> e = new LinkedList<Entity>();
 	
+	Entity ent;
+	private Texture tex;
 	Random r = new Random();
 	
-	Bullet TempBullet;
-	Enemy TempEnemy;
+	public Controller(Texture tex)
+	{
+		this.tex = tex;
+	}
 	
-	Game game;
-	Texture tex;
-	
-	public Controller(Game game, Texture tex) {
-		this.game = game;
-		addEnemy(new Enemy(r.nextInt(Game.WIDTH * Game.SCALE),0,tex));
-		
+	public void createEnemy(int eneny_count)
+	{
+		for (int i=0;i<eneny_count;i++)
+		{
+			addEntity(new Enemy(r.nextInt(640), -10, tex));
 		}
-
+	}
+	
 	public void tick() {
-		for (int i = 0; i < b.size(); i++) {
-			TempBullet = b.get(i);
-				if (TempBullet.getY() < 0)
-					removeBullet(TempBullet);
-			TempBullet.tick();
+		for(int i=0;i<e.size();i++)
+		{
+			ent = e.get(i);
+			ent.tick();
 		}
-		for (int i = 0; i < e.size(); i++) {
-			TempEnemy = e.get(i);
-			
-			if (TempEnemy.getY() > (Game.HEIGHT * Game.SCALE))
-			{
-				TempEnemy.setY(0);
-			}
-			
-			TempEnemy.tick();
-		}
+		
 	}
 
 	public void render(Graphics g) {
-		for (int i = 0; i < b.size(); i++) {
-			TempBullet = b.get(i);
+		for(int i=0; i< e.size(); i++)
+		{
+			ent = e.get(i);
 			
-			TempBullet.render(g);
+			ent.render(g);
 		}
-		for (int i = 0; i < e.size(); i++) {
-			TempEnemy = e.get(i);
-			
-			TempEnemy.render(g);
-		}
+		
 	}
 
-	public void addBullet(Bullet block) {
-		b.add(block);
-	}
-
-	public void removeBullet(Bullet block) {
-		b.remove(block);
-	}
-	
-	public void addEnemy(Enemy block) {
+	public void addEntity(Entity block)
+	{
 		e.add(block);
 	}
-
-	public void removeEnemy(Enemy block) {
+	
+	public void removeEntity(Entity block)
+	{
 		e.remove(block);
 	}
 	

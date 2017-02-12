@@ -26,6 +26,18 @@ public class Game extends Canvas implements Runnable {
 	
 	private boolean is_shooting = false;
 
+	private int enemy_count = 5;
+	private int enemt_killed = 0;
+	
+
+	public int getEnemt_killed() {
+		return enemt_killed;
+	}
+
+	public void setEnemt_killed(int enemt_killed) {
+		this.enemt_killed = enemt_killed;
+	}
+
 	private Player p;
 	private Controller c;
 	private Texture tex;
@@ -46,7 +58,9 @@ public class Game extends Canvas implements Runnable {
 		tex = new Texture(this);
 		
 		p = new Player(WIDTH, HEIGHT*2, tex);
-		c = new Controller(this, tex);
+		c = new Controller(tex);
+		
+		c.createEnemy(enemy_count);
 
 	}
 
@@ -152,8 +166,8 @@ public class Game extends Canvas implements Runnable {
 			p.setVelY(-5);
 		} else if (key == KeyEvent.VK_SPACE && !is_shooting)
 		{
+			c.addEntity(new Bullet(p.getX(), p.getY(), tex));
 			is_shooting = true;
-			c.addBullet(new Bullet(p.getX(), p.getY(), tex));
 		}
 
 	}
@@ -202,4 +216,15 @@ public class Game extends Canvas implements Runnable {
 		return spriteSheet;
 	}
 
+	
+	public int getEnemy_count() {
+		return enemy_count;
+	}
+
+	public void setEnemy_count(int enemy_count) {
+		this.enemy_count = enemy_count;
+	}
+
+	
+	
 }

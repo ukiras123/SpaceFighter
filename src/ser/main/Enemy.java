@@ -3,12 +3,14 @@ package ser.main;
 import java.awt.Graphics;
 import java.util.Random;
 
-public class Enemy {
+public class Enemy implements Entity {
 	
 	private double x, y;
-	Random r = new Random();
 	
 	private Texture tex;
+	Random r = new Random();
+	
+	private int speed = r.nextInt(3)+1;
 	
 	public Enemy(double x, double y, Texture tex)
 	{
@@ -19,14 +21,14 @@ public class Enemy {
 
 	public void tick()
 	{
-		y += 2;
+		y += speed;
 		
-		if (y>(Game.HEIGHT * Game.SCALE))
+		if(y>Game.HEIGHT*Game.SCALE)
 		{
-			y = 0;
-			x= r.nextInt(Game.WIDTH * Game.SCALE);
-		}	
-			
+			x = r.nextInt(640);
+			y = -10;
+		}
+	
 	}
 	
 	public void render(Graphics g)
@@ -41,6 +43,10 @@ public class Enemy {
 	public void setY(double y)
 	{
 		this.y = y;
+	}
+
+	public double getX() {
+		return x;
 	}
 	
 }

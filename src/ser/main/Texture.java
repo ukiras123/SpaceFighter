@@ -19,6 +19,5 @@ public class Texture {
 		player = ss.grabImage(3, 1	, 32, 32);
 		missile = ss.grabImage(2, 1, 32, 32);
 		enemy = ss.grabImage(1, 1, 32, 32);
-		
 	}
 }
