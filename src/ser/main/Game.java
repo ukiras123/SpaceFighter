@@ -7,8 +7,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
+
+import ser.main.classes.EntityA;
+import ser.main.classes.EntityB;
 
 public class Game extends Canvas implements Runnable {
 
@@ -42,6 +46,11 @@ public class Game extends Canvas implements Runnable {
 	private Controller c;
 	private Texture tex;
 
+	public LinkedList<EntityA> ea;
+	public LinkedList<EntityB> eb;
+
+	
+	
 	public void init() {
 		requestFocus();
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -59,6 +68,9 @@ public class Game extends Canvas implements Runnable {
 		
 		p = new Player(WIDTH, HEIGHT*2, tex);
 		c = new Controller(tex);
+		
+		ea = c.getEntityA();
+		eb = c.getEntityB();
 		
 		c.createEnemy(enemy_count);
 
@@ -166,7 +178,7 @@ public class Game extends Canvas implements Runnable {
 			p.setVelY(-5);
 		} else if (key == KeyEvent.VK_SPACE && !is_shooting)
 		{
-			c.addEntity(new Bullet(p.getX(), p.getY(), tex));
+			c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
 			is_shooting = true;
 		}
 

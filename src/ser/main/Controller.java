@@ -4,54 +4,87 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.text.html.parser.Entity;
+
+import ser.main.classes.EntityA;
+import ser.main.classes.EntityB;
+
 public class Controller {
 
-	private LinkedList<Entity> e = new LinkedList<Entity>();
-	
-	Entity ent;
+	private LinkedList<EntityA> ea = new LinkedList<EntityA>();
+	private LinkedList<EntityB> eb = new LinkedList<EntityB>();
+
+	EntityA enta;
+	EntityB entb;
+
 	private Texture tex;
 	Random r = new Random();
-	
-	public Controller(Texture tex)
-	{
+
+	public Controller(Texture tex) {
 		this.tex = tex;
 	}
-	
-	public void createEnemy(int eneny_count)
-	{
-		for (int i=0;i<eneny_count;i++)
-		{
+
+	public void createEnemy(int eneny_count) {
+		for (int i = 0; i < eneny_count; i++) {
 			addEntity(new Enemy(r.nextInt(640), -10, tex));
 		}
 	}
-	
+
 	public void tick() {
-		for(int i=0;i<e.size();i++)
-		{
-			ent = e.get(i);
-			ent.tick();
+
+		// A Class
+		for (int i = 0; i < ea.size(); i++) {
+			enta = ea.get(i);
+			enta.tick();
 		}
-		
+
+		// B Class
+		for (int i = 0; i < eb.size(); i++) {
+			entb = eb.get(i);
+			entb.tick();
+		}
+
 	}
 
 	public void render(Graphics g) {
-		for(int i=0; i< e.size(); i++)
-		{
-			ent = e.get(i);
-			
-			ent.render(g);
+
+		// A Class
+		for (int i = 0; i < ea.size(); i++) {
+			enta = ea.get(i);
+
+			enta.render(g);
 		}
-		
+		// B Class
+		for (int i = 0; i < eb.size(); i++) {
+			entb = eb.get(i);
+
+			entb.render(g);
+		}
+
 	}
 
-	public void addEntity(Entity block)
-	{
-		e.add(block);
+	public void addEntity(EntityA block) {
+		ea.add(block);
+	}
+
+	public void removeEntity(EntityA block) {
+		ea.remove(block);
 	}
 	
-	public void removeEntity(Entity block)
-	{
-		e.remove(block);
+	public void addEntity(EntityB block) {
+		eb.add(block);
 	}
-	
+
+	public void removeEntity(EntityB block) {
+		eb.remove(block);
+	}
+
+	public LinkedList<EntityA> getEntityA()
+	{
+		return ea;
+	}
+	public LinkedList<EntityB> getEntityB()
+	{
+		return eb;
+	}
 }
