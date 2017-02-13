@@ -1,8 +1,11 @@
 package ser.main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -40,8 +43,8 @@ public class Game extends Canvas implements Runnable {
 		return enemy_killed;
 	}
 
-	public void setEnemt_killed(int enemt_killed) {
-		this.enemy_killed = enemt_killed;
+	public void setEnemt_killed(int enemy_killed) {
+		this.enemy_killed = enemy_killed;
 	}
 
 	private Player p;
@@ -51,6 +54,8 @@ public class Game extends Canvas implements Runnable {
 
 	public LinkedList<EntityA> ea;
 	public LinkedList<EntityB> eb;
+	
+	public static int HEALTH = 100 * 2;
 
 	public static enum STATE
 	{
@@ -66,8 +71,8 @@ public class Game extends Canvas implements Runnable {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
 			spriteSheet = loader.loadImage("/sheet.png");
-			background = loader.loadImage("/background2.jpg");
-			background1 = loader.loadImage("/background1.jpg");
+			background = loader.loadImage("/background1.jpg");
+			background1 = loader.loadImage("/background2.jpg");
 
 
 		} catch (IOException e) {
@@ -79,8 +84,8 @@ public class Game extends Canvas implements Runnable {
 		
 		tex = new Texture(this);
 		
-		p = new Player(WIDTH, HEIGHT*2, tex);
 		c = new Controller(tex, this);
+		p = new Player(WIDTH, HEIGHT*2, tex, this, c);
 		menu = new Menu();
 		
 		ea = c.getEntityA();
@@ -158,6 +163,12 @@ public class Game extends Canvas implements Runnable {
 			enemy_count += 2;
 			enemy_killed = 0;
 			c.createEnemy(enemy_count);
+			
+		}
+		
+		if (HEALTH <=0)
+		{
+			State = STATE.MENU;
 		}
 		
 	}
@@ -183,12 +194,41 @@ public class Game extends Canvas implements Runnable {
 		g.drawImage(background1, 0, 0, null);
 		p.render(g);
 		c.render(g);
+		
+		int alpha = 150;
+		Color grey = new Color(224, 224, 224, alpha);
+		Color green = new Color(0, 255, 0, alpha);
+		Color white = new Color(255, 225, 225, alpha);
+
+
+		g.setColor(grey);
+		g.fillRect(5, 5, 200, 20);
+		
+		g.setColor(green);
+		g.fillRect(5, 5, HEALTH, 20);
+		
+		g.setColor(white);
+		g.drawRect(5, 5, 200, 20);
+		
+		
+		Graphics2D g2d = (Graphics2D) g;
+
+		g.setColor(grey);
+		g.fillRect(WIDTH*15/10, 5, 80, 20);
+		
+		Font fnt0 = new Font("arial" , Font.BOLD, 13);
+		g.setFont(fnt0);
+		g.setColor(Color.white);
+		g.drawString("Score : " + String.valueOf(enemy_killed), WIDTH*15/10	, 20);
+		
+		
 		}
 		else if(State == STATE.MENU )
 		{
 			menu.render(g);
 		}
-		//
+		
+
 		g.dispose();
 		bs.show();
 	}
