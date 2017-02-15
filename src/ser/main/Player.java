@@ -24,7 +24,7 @@ public class Player extends GameObject implements EntityA {
 		this.game = game;
 		this.controller = controller;
 		
-		anim = new Animation(5, tex.player[0], tex.player[1], tex.player[2]);
+		anim = new Animation(5, tex.player, tex.player, tex.player);
 	}
 
 	public void tick() {

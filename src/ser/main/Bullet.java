@@ -18,7 +18,7 @@ Animation anim;
 
 		this.game = game;
 		
-		anim = new Animation(5, tex.missile[0],tex.missile[1],tex.missile[2] );
+		anim = new Animation(5, tex.missile,tex.missile,tex.missile );
 	}
 	
 	public void tick()

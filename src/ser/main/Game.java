@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage spriteSheet = null;
 	private BufferedImage background = null;
 	private BufferedImage background1 = null;
-
+	private BufferedImage player = null;
 	
 	private boolean is_shooting = false;
 
@@ -71,9 +71,9 @@ public class Game extends Canvas implements Runnable {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
 			spriteSheet = loader.loadImage("/sheet.png");
-			background = loader.loadImage("/background1.jpg");
-			background1 = loader.loadImage("/background2.jpg");
-
+			background = loader.loadImage("/background.gif");
+			background1 = loader.loadImage("/background.gif");
+			player = loader.loadImage("/space_ship2.gif");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -302,6 +302,11 @@ public class Game extends Canvas implements Runnable {
 	public BufferedImage getSpriteSheet() {
 		return spriteSheet;
 	}
+	
+	public BufferedImage getPlayer() {
+		return player;
+	}
+
 
 	
 	public int getEnemy_count() {
