@@ -72,7 +72,7 @@ public class Controller {
 	public void removeEntity(EntityA block) {
 		ea.remove(block);
 	}
-	
+
 	public void addEntity(EntityB block) {
 		eb.add(block);
 	}
@@ -81,12 +81,11 @@ public class Controller {
 		eb.remove(block);
 	}
 
-	public LinkedList<EntityA> getEntityA()
-	{
+	public LinkedList<EntityA> getEntityA() {
 		return ea;
 	}
-	public LinkedList<EntityB> getEntityB()
-	{
+
+	public LinkedList<EntityB> getEntityB() {
 		return eb;
 	}
 }

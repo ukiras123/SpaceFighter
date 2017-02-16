@@ -11,9 +11,8 @@ public class GameObject {
 		this.y = y;
 	}
 
-	public Rectangle getBounds(int width, int height)
-	{
-		return new Rectangle((int)x, (int)y,width,height);
+	public Rectangle getBounds(int width, int height) {
+		return new Rectangle((int) x, (int) y, width, height);
 	}
-	
+
 }

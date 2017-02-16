@@ -31,13 +31,12 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage spriteSheet = null;
 	private BufferedImage background = null;
 	private BufferedImage background1 = null;
+	private BufferedImage player = null;
 
-	
 	private boolean is_shooting = false;
 
 	private int enemy_count = 5;
 	private int enemy_killed = 0;
-	
 
 	public int getEnemt_killed() {
 		return enemy_killed;
@@ -54,26 +53,23 @@ public class Game extends Canvas implements Runnable {
 
 	public LinkedList<EntityA> ea;
 	public LinkedList<EntityB> eb;
-	
+
 	public static int HEALTH = 100 * 2;
 
-	public static enum STATE
-	{
-		MENU,
-		GAME
+	public static enum STATE {
+		MENU, GAME
 	};
-	
+
 	public static STATE State = STATE.MENU;
-	
-	
+
 	public void init() {
 		requestFocus();
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
 			spriteSheet = loader.loadImage("/sheet.png");
-			background = loader.loadImage("/background1.jpg");
-			background1 = loader.loadImage("/background2.jpg");
-
+			background = loader.loadImage("/background.gif");
+			background1 = loader.loadImage("/background.gif");
+			player = loader.loadImage("/space.gif");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -81,16 +77,16 @@ public class Game extends Canvas implements Runnable {
 
 		addKeyListener(new KeyInput(this));
 		this.addMouseListener(new MoustInput());
-		
+
 		tex = new Texture(this);
-		
+
 		c = new Controller(tex, this);
-		p = new Player(WIDTH, HEIGHT*2, tex, this, c);
+		p = new Player(WIDTH, HEIGHT * 2, tex, this, c);
 		menu = new Menu();
-		
+
 		ea = c.getEntityA();
 		eb = c.getEntityB();
-		
+
 		c.createEnemy(enemy_count);
 
 	}
@@ -137,40 +133,36 @@ public class Game extends Canvas implements Runnable {
 			}
 			render();
 			frames++;
-			
-			if(System.currentTimeMillis() - timer > 1000)
-			{
+
+			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				System.out.println(updates+" Ticks, Fps "+frames);
+				System.out.println(updates + " Ticks, Fps " + frames);
 				updates = 0;
 				frames = 0;
 			}
-			
+
 		}
 		stop();
-		
+
 	}
 
 	// everything that updates
 	private void tick() {
-		if(State == STATE.GAME)
-		{
-		p.tick();
-		c.tick();
+		if (State == STATE.GAME) {
+			p.tick();
+			c.tick();
 		}
-		if (enemy_killed >= enemy_count)
-		{
+		if (enemy_killed >= enemy_count) {
 			enemy_count += 2;
 			enemy_killed = 0;
 			c.createEnemy(enemy_count);
-			
+
 		}
-		
-		if (HEALTH <=0)
-		{
+
+		if (HEALTH <= 0) {
 			State = STATE.MENU;
 		}
-		
+
 	}
 
 	// everything that renders
@@ -186,81 +178,68 @@ public class Game extends Canvas implements Runnable {
 		//
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-		
+
 		g.drawImage(background, 0, 0, null);
-		
-		if(State == STATE.GAME)
-		{
-		g.drawImage(background1, 0, 0, null);
-		p.render(g);
-		c.render(g);
-		
-		int alpha = 150;
-		Color grey = new Color(224, 224, 224, alpha);
-		Color green = new Color(0, 255, 0, alpha);
-		Color white = new Color(255, 225, 225, alpha);
 
+		if (State == STATE.GAME) {
+			g.drawImage(background1, 0, 0, null);
+			p.render(g);
+			c.render(g);
 
-		g.setColor(grey);
-		g.fillRect(5, 5, 200, 20);
-		
-		g.setColor(green);
-		g.fillRect(5, 5, HEALTH, 20);
-		
-		g.setColor(white);
-		g.drawRect(5, 5, 200, 20);
-		
-		
-		Graphics2D g2d = (Graphics2D) g;
+			int alpha = 150;
+			Color grey = new Color(224, 224, 224, alpha);
+			Color green = new Color(0, 255, 0, alpha);
+			Color white = new Color(255, 225, 225, alpha);
 
-		g.setColor(grey);
-		g.fillRect(WIDTH*15/10, 5, 80, 20);
-		
-		Font fnt0 = new Font("arial" , Font.BOLD, 13);
-		g.setFont(fnt0);
-		g.setColor(Color.white);
-		g.drawString("Score : " + String.valueOf(enemy_killed), WIDTH*15/10	, 20);
-		
-		
-		}
-		else if(State == STATE.MENU )
-		{
+			g.setColor(grey);
+			g.fillRect(5, 5, 200, 20);
+
+			g.setColor(green);
+			g.fillRect(5, 5, HEALTH, 20);
+
+			g.setColor(white);
+			g.drawRect(5, 5, 200, 20);
+
+			Graphics2D g2d = (Graphics2D) g;
+
+			g.setColor(grey);
+			g.fillRect(WIDTH * 15 / 10, 5, 80, 20);
+
+			Font fnt0 = new Font("arial", Font.BOLD, 13);
+			g.setFont(fnt0);
+			g.setColor(Color.white);
+			g.drawString("Score : " + String.valueOf(enemy_killed), WIDTH * 15 / 10, 20);
+
+		} else if (State == STATE.MENU) {
 			menu.render(g);
 		}
-		
 
 		g.dispose();
 		bs.show();
 	}
 
-
-	
-	public void keyPressed(KeyEvent e)
-	{
+	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		
-		if(State == STATE.GAME)
-		{
-		if (key == KeyEvent.VK_RIGHT) {
-			p.setVelX(5);
-		} else if (key == KeyEvent.VK_LEFT) {
-			p.setVelX(-5);
 
-		} else if (key == KeyEvent.VK_DOWN) {
-			p.setVelY(5);
+		if (State == STATE.GAME) {
+			if (key == KeyEvent.VK_RIGHT) {
+				p.setVelX(5);
+			} else if (key == KeyEvent.VK_LEFT) {
+				p.setVelX(-5);
 
-		} else if (key == KeyEvent.VK_UP) {
-			p.setVelY(-5);
-		} else if (key == KeyEvent.VK_SPACE && !is_shooting)
-		{
-			c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
-			is_shooting = true;
-		}
+			} else if (key == KeyEvent.VK_DOWN) {
+				p.setVelY(5);
+
+			} else if (key == KeyEvent.VK_UP) {
+				p.setVelY(-5);
+			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
+				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
+				is_shooting = true;
+			}
 		}
 	}
-	
-	public void keyReleased(KeyEvent e)
-	{
+
+	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_RIGHT) {
 			p.setVelX(0);
@@ -272,13 +251,11 @@ public class Game extends Canvas implements Runnable {
 
 		} else if (key == KeyEvent.VK_UP) {
 			p.setVelY(0);
-		} else if (key == KeyEvent.VK_SPACE)
-		{
+		} else if (key == KeyEvent.VK_SPACE) {
 			is_shooting = false;
 		}
-		
+
 	}
-	
 
 	public static void main(String[] args) {
 		Game game = new Game();
@@ -303,7 +280,10 @@ public class Game extends Canvas implements Runnable {
 		return spriteSheet;
 	}
 
-	
+	public BufferedImage getPlayer() {
+		return player;
+	}
+
 	public int getEnemy_count() {
 		return enemy_count;
 	}
@@ -320,6 +300,4 @@ public class Game extends Canvas implements Runnable {
 		this.enemy_killed = enemy_killed;
 	}
 
-	
-	
 }
