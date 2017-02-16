@@ -4,45 +4,38 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import ser.main.classes.EntityA;
-import ser.main.lib.Animation;
 
 public class Bullet extends GameObject implements EntityA {
-	
+
 	private Texture tex;
-private Game game;
-	
-Animation anim;
+	private Game game;
+
 	public Bullet(double x, double y, Texture tex, Game game) {
-		super(x,y);
+		super(x, y);
 		this.tex = tex;
 
 		this.game = game;
-		
-		anim = new Animation(5, tex.missile,tex.missile,tex.missile );
+
 	}
-	
-	public void tick()
-	{
+
+	public void tick() {
 		y -= 6;
-	
-		anim.runAnimation();
+		// x += 4;
 	}
-	
-	public void render(Graphics g)
-	{
-anim.drawAnimation(g, x, y, 0);
-}
-	public Rectangle getBounds()
-	{
-		return new Rectangle((int)x, (int)y,32,32);
+
+	public void render(Graphics g) {
+		g.drawImage(tex.missile, (int) x, (int) y, null);
 	}
-	
-	public double getY()
-	{
+
+	public Rectangle getBounds() {
+		return new Rectangle((int) x, (int) y, 32, 32);
+	}
+
+	public double getY() {
 		return y;
 	}
-	public double getX()
-	{
+
+	public double getX() {
 		return x;
 	}
 
