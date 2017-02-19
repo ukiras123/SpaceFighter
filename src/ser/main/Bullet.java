@@ -20,7 +20,7 @@ public class Bullet extends GameObject implements EntityA {
 
 	public void tick() {
 		y -= 6;
-		// x += 4;
+		 x += 4;
 	}
 
 	public void render(Graphics g) {
