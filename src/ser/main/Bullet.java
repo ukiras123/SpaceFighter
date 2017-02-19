@@ -10,6 +10,7 @@ public class Bullet extends GameObject implements EntityA {
 	private Texture tex;
 	private Game game;
 
+	private int count = 0;
 	public Bullet(double x, double y, Texture tex, Game game) {
 		super(x, y);
 		this.tex = tex;
@@ -20,7 +21,7 @@ public class Bullet extends GameObject implements EntityA {
 
 	public void tick() {
 		y -= 6;
-		 x += 4;
+		//x += 10;
 	}
 
 	public void render(Graphics g) {

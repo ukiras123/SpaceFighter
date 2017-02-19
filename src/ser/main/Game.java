@@ -37,7 +37,8 @@ public class Game extends Canvas implements Runnable {
 
 	private int enemy_count = 5;
 	private int enemy_killed = 0;
-
+	private Sound sound;
+	
 	public int getEnemt_killed() {
 		return enemy_killed;
 	}
@@ -87,6 +88,7 @@ public class Game extends Canvas implements Runnable {
 		ea = c.getEntityA();
 		eb = c.getEntityB();
 
+		sound = new Sound();
 		c.createEnemy(enemy_count);
 
 	}
@@ -159,9 +161,7 @@ public class Game extends Canvas implements Runnable {
 
 		}
 
-		if (HEALTH <= 0) {
-			State = STATE.MENU;
-		}
+
 
 	}
 
@@ -213,7 +213,11 @@ public class Game extends Canvas implements Runnable {
 		} else if (State == STATE.MENU) {
 			menu.render(g);
 		}
-
+		if (HEALTH <= 0) {
+			State = STATE.MENU;
+			this.HEALTH = 200;
+		}
+		
 		g.dispose();
 		bs.show();
 	}
@@ -234,6 +238,7 @@ public class Game extends Canvas implements Runnable {
 				p.setVelY(-5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
 				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
+				sound.playGunSound();
 				is_shooting = true;
 			}
 		}
@@ -252,6 +257,7 @@ public class Game extends Canvas implements Runnable {
 		} else if (key == KeyEvent.VK_UP) {
 			p.setVelY(0);
 		} else if (key == KeyEvent.VK_SPACE) {
+			sound.stopGunSound();
 			is_shooting = false;
 		}
 
