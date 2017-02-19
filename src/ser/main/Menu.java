@@ -10,7 +10,7 @@ public class Menu {
 	
 	public Rectangle playButton = new Rectangle(Game.WIDTH/2+120, 150,100,50);
 	public Rectangle helpButton = new Rectangle(Game.WIDTH/2+120, 250,100,50);
-	public Rectangle quiButton = new Rectangle(Game.WIDTH/2+120, 350,100,50);
+	public Rectangle quitButton = new Rectangle(Game.WIDTH/2+120, 350,100,50);
 
 	
 	
@@ -28,8 +28,8 @@ public class Menu {
 		g2d.draw(playButton);
 		g.drawString("Help", helpButton.x+19, helpButton.y +30);
 		g2d.draw(helpButton);
-		g.drawString("Quit", quiButton.x+19, quiButton.y +30);
-		g2d.draw(quiButton);
+		g.drawString("Quit", quitButton.x+19, quitButton.y +30);
+		g2d.draw(quitButton);
 	}
 
 }

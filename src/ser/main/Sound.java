@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Sound {
-	URL url1 = Sound.class.getResource("/gun3.wav");
+	URL url1 = Sound.class.getResource("/laserSound.wav");
 	AudioClip gun = Applet.newAudioClip(url1);
 	
 	public void playGunSound()

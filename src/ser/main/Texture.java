@@ -19,7 +19,7 @@ public class Texture {
 		missile = ss.grabImage(2, 1, 32, 32);
 		asteroid = ss.grabImage(4, 1, 32, 32);
 		enemy = ss.grabImage(1, 1, 32, 32);
-		player = game.getPlayer();
+		player = game.getPlayerBuffer();
 
 	}
 }

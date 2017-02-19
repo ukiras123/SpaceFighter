@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -22,7 +23,7 @@ public class Game extends Canvas implements Runnable {
 	public static final int WIDTH = 320;
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 2;
-	public final String TITLE = "Space Game";
+	public final String TITLE = "Space Fighter";
 
 	private boolean running = false;
 	private Thread thread;
@@ -35,7 +36,7 @@ public class Game extends Canvas implements Runnable {
 
 	private boolean is_shooting = false;
 
-	private int enemy_count = 5;
+	private int enemy_count = 10;
 	private int enemy_killed = 0;
 	private Sound sound;
 	
@@ -56,9 +57,12 @@ public class Game extends Canvas implements Runnable {
 	public LinkedList<EntityB> eb;
 
 	public static int HEALTH = 100 * 2;
+	
+	int frames = 0;
+
 
 	public static enum STATE {
-		MENU, GAME
+		MENU, GAME, HELP
 	};
 
 	public static STATE State = STATE.MENU;
@@ -115,6 +119,7 @@ public class Game extends Canvas implements Runnable {
 		System.exit(1);
 	}
 
+	
 	public void run() {
 		init();
 		long lastTime = System.nanoTime();
@@ -122,7 +127,7 @@ public class Game extends Canvas implements Runnable {
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		int updates = 0;
-		int frames = 0;
+		
 		long timer = System.currentTimeMillis();
 		while (running) {
 			long now = System.nanoTime();
@@ -138,7 +143,7 @@ public class Game extends Canvas implements Runnable {
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				//System.out.println(updates + " Ticks, Fps " + frames);
+				System.out.println(updates + " Ticks, Fps " + frames);
 				updates = 0;
 				frames = 0;
 			}
@@ -213,6 +218,29 @@ public class Game extends Canvas implements Runnable {
 		} else if (State == STATE.MENU) {
 			menu.render(g);
 		}
+		else if (State ==STATE.HELP)
+		{
+			Graphics2D g2d = (Graphics2D) g;
+			Font fnt0 = new Font("arial" , Font.BOLD, 59);
+			g.setFont(fnt0);
+			g.setColor(Color.white);
+			g.drawString("SPACE FIGHTER", Game.WIDTH/4	, 100);
+						
+			Font fnt1 = new Font("Impact", Font.CENTER_BASELINE, 22);
+			g.setFont(fnt1);
+			
+			g.drawString("Up: 		Up Arrow", (Game.WIDTH >>1) + 100, 150);
+			g.drawString("Down: 	Down Arrow", (Game.WIDTH >>1) + 100, 200);
+			g.drawString("Left: 	Left Arrow", (Game.WIDTH >>1) + 100, 250);
+			g.drawString("Right: 	Right Arrow", (Game.WIDTH >>1) + 100, 300);
+			g.drawString("Shoot: 	Space", (Game.WIDTH >>1) + 100, 350);
+			
+			
+			Rectangle backButton = new Rectangle(Game.WIDTH/2+120, 380,100,50);
+			g.drawString("Go Back", backButton.x+19, backButton.y+30);
+			g2d.draw(backButton);
+
+		}
 		if (HEALTH <= 0) {
 			State = STATE.MENU;
 			this.HEALTH = 200;
@@ -286,7 +314,7 @@ public class Game extends Canvas implements Runnable {
 		return spriteSheet;
 	}
 
-	public BufferedImage getPlayer() {
+	public BufferedImage getPlayerBuffer() {
 		return player;
 	}
 
@@ -305,6 +333,17 @@ public class Game extends Canvas implements Runnable {
 	public void setEnemy_killed(int enemy_killed) {
 		this.enemy_killed = enemy_killed;
 	}
+	
+	public  Player getPlayer()
+	{
+		return p;
+	}
+	
+	public int getFrame()
+	{
+		return frames;
+	}
+	
 	
 
 }

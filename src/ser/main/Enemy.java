@@ -16,19 +16,21 @@ public class Enemy extends GameObject implements EntityB {
 	private Controller c;
 
 	private int speed = r.nextInt(3) + 1;
-
+	private Player p;
+	
 	public Enemy(double x, double y, Texture tex, Controller c, Game game) {
 		super(x, y);
 		this.tex = tex;
 		this.c = c;
 		this.game = game;
+		p = game.getPlayer();
 	}
 
 	public void tick() {
 		y += speed;
 
 		if (y > Game.HEIGHT * Game.SCALE) {
-			x = r.nextInt(640);
+			x = p.getX();
 			y = -5;
 		}
 
