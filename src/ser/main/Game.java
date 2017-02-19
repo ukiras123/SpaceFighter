@@ -299,5 +299,6 @@ public class Game extends Canvas implements Runnable {
 	public void setEnemy_killed(int enemy_killed) {
 		this.enemy_killed = enemy_killed;
 	}
+	
 
 }
