@@ -10,13 +10,13 @@ public class MoustInput implements MouseListener {
 
 		int mx = e.getX();
 		int my = e.getY();
-
+		
+		//Menu Page
 		if(Game.State == Game.STATE.MENU)
 		{
 		// Play Button
 		if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
 			if (my >= 150 && my <= 200) {
-				// Play button
 				Game.State = Game.STATE.GAME;
 			}
 		}
@@ -24,7 +24,6 @@ public class MoustInput implements MouseListener {
 		// Menu Button
 		if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
 			if (my >= 250 && my <= 300) {
-				// Play button
 				Game.State = Game.STATE.HELP;
 			}
 		}
@@ -32,16 +31,17 @@ public class MoustInput implements MouseListener {
 		// Quit Button
 		if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
 			if (my >= 350 && my <= 400) {
-				// Play button
 				System.exit(1);
 			}
 		}
 		}
+		
+		//Help Page
 		if (Game.State == Game.STATE.HELP)
 		{
+			//Back Button
 			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
 				if (my >= 380 && my <= 430) {
-					// Back Button
 					Game.State = Game.STATE.MENU;
 				}
 			}
