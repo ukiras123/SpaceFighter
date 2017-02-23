@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Texture {
 
-	public BufferedImage player, missile, enemy, asteroid;
+	public BufferedImage player, missile, enemy, asteroid, enemy2;
 
 	private SpriteSheet ss;
 	Game game;
@@ -19,7 +19,7 @@ public class Texture {
 		missile = ss.grabImage(2, 1, 32, 32);
 		asteroid = ss.grabImage(4, 1, 32, 32);
 		enemy = ss.grabImage(1, 1, 32, 32);
+		enemy2 = ss.grabImage(4, 2, 32, 32);
 		player = game.getPlayerBuffer();
-
 	}
 }

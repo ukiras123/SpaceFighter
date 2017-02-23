@@ -36,7 +36,7 @@ public class Game extends Canvas implements Runnable {
 
 	private boolean is_shooting = false;
 
-	private int enemy_count = 10;
+	private int enemy_count = 16;
 	private int enemy_killed = 0;
 	private Sound sound;
 	

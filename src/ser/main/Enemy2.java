@@ -7,7 +7,7 @@ import java.util.Random;
 import ser.main.classes.EntityA;
 import ser.main.classes.EntityB;
 
-public class Enemy extends GameObject implements EntityB {
+public class Enemy2 extends GameObject implements EntityB {
 
 	private Texture tex;
 	Random r = new Random();
@@ -18,7 +18,7 @@ public class Enemy extends GameObject implements EntityB {
 	private int speed = r.nextInt(3) + 1;
 	private Player p;
 	
-	public Enemy(double x, double y, Texture tex, Controller c, Game game) {
+	public Enemy2(double x, double y, Texture tex, Controller c, Game game) {
 		super(x, y);
 		this.tex = tex;
 		this.c = c;
@@ -28,7 +28,6 @@ public class Enemy extends GameObject implements EntityB {
 
 	public void tick() {
 		y += speed;
-		setX(p.getX());
 
 		if (y > Game.HEIGHT * Game.SCALE) {
 			x = p.getX();
@@ -49,7 +48,7 @@ public class Enemy extends GameObject implements EntityB {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(tex.enemy, (int) x, (int) y, null);
+		g.drawImage(tex.enemy2, (int) x, (int) y, null);
 	}
 
 	public Rectangle getBounds() {
@@ -61,24 +60,11 @@ public class Enemy extends GameObject implements EntityB {
 	}
 
 	public void setY(double y) {
-		this.y = y*0.8;
+		this.y = y;
 	}
 
 	public double getX() {
 		return x;
-	}
-	
-	public void setX(double x) {
-		if(x<this.x)
-		{
-		this.x -= 0.5;
-		}
-		else
-		{
-			this.x += 0.5;
-	
-		}
-		
 	}
 
 }
