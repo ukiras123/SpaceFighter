@@ -8,16 +8,14 @@ import javax.sound.sampled.LineUnavailableException;
 
 //Whenever we press key, this class is called
 public class KeyInput extends KeyAdapter {
-	
+
 	Game game;
-	
-	public KeyInput(Game game)
-	{
+
+	public KeyInput(Game game) {
 		this.game = game;
 	}
-	
-	public void keyPressed(KeyEvent e)
-	{
+
+	public void keyPressed(KeyEvent e) {
 		try {
 			game.keyPressed(e);
 		} catch (LineUnavailableException e1) {
@@ -28,11 +26,9 @@ public class KeyInput extends KeyAdapter {
 			e1.printStackTrace();
 		}
 	}
-	
-	public void keyReleased(KeyEvent e)
-	{
+
+	public void keyReleased(KeyEvent e) {
 		game.keyReleased(e);
 	}
-	
 
 }

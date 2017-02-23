@@ -45,15 +45,15 @@ public class Game extends Canvas implements Runnable {
 	private int enemy_count = 8;
 	private int enemy_killed = 0;
 	private static Sound sound;
-	
+
 	public void setScore() {
 		this.score += 1;
 	}
-	
+
 	public int getScore() {
 		return score;
 	}
-	
+
 	public int getEnemt_killed() {
 		return enemy_killed;
 	}
@@ -72,8 +72,6 @@ public class Game extends Canvas implements Runnable {
 	public LinkedList<EntityB> eb;
 
 	public static int HEALTH = 100 * 2;
-	
-
 
 	public static enum STATE {
 		MENU, GAME, HELP
@@ -118,7 +116,7 @@ public class Game extends Canvas implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // vhgm
-		
+
 	}
 
 	private synchronized void start() {
@@ -143,63 +141,63 @@ public class Game extends Canvas implements Runnable {
 		System.exit(1);
 	}
 
-	
 	public void run() {
-	init();
-	try {
-		sound.playGame();
-	} catch (LineUnavailableException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	long lastTime = System.nanoTime();
-	final double amountOfTicks = 60.0; // was 60.0 . higher means faster game-play
-	double ns = 1000000000 / amountOfTicks;
-	double delta = 0;
-	int updates = 0;
-	int frames = 0;
-	long timer = System.currentTimeMillis();
-	while (running) {
-		long now = System.nanoTime();
-		delta += (now - lastTime) / ns;
-		lastTime = now;
-		if (delta >= 1) {
+		init();
+		try {
+			sound.playGame();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long lastTime = System.nanoTime();
+		final double amountOfTicks = 60.0; // was 60.0 . higher means faster
+											// game-play
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		int updates = 0;
+		int frames = 0;
+		long timer = System.currentTimeMillis();
+		while (running) {
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			if (delta >= 1) {
 				tick();
-			updates++;
-			delta--;
-		}
-		render();
-		frames++;
+				updates++;
+				delta--;
+			}
+			render();
+			frames++;
 
-		if (System.currentTimeMillis() - timer > 1000) {
-			timer += 1000;
-			System.out.println(updates + " Ticks, Fps " + frames);
-			updates = 0;
-			frames = 0;
-		}
+			if (System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+				System.out.println(updates + " Ticks, Fps " + frames);
+				updates = 0;
+				frames = 0;
+			}
 
+		}
+		stop();
 	}
-	stop();
-}
 
 	int ybg = 0;
-	int ybg2 = -((HEIGHT*2));
+	int ybg2 = -((HEIGHT * 2));
+
 	// everything that updates
 	private void tick() {
-		
 
-		if(ybg2<= 0){
-			ybg2 += 1 ;
-		}else{
-			ybg2 = -((HEIGHT*2));
+		if (ybg2 <= 0) {
+			ybg2 += 1;
+		} else {
+			ybg2 = -((HEIGHT * 2));
 		}
-		
-		if(ybg<=(HEIGHT*2)){
-			ybg += 1 ;
-		}else{
+
+		if (ybg <= (HEIGHT * 2)) {
+			ybg += 1;
+		} else {
 			ybg = 0;
 		}
-		
+
 		if (State == STATE.GAME) {
 			p.tick();
 			c.tick();
@@ -222,14 +220,12 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		Graphics g = bs.getDrawGraphics();
-		
-		
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 
 		g.drawImage(background, 30, ybg, null);
 		g.drawImage(background, 30, ybg2, null);
-		
+
 		if (State == STATE.GAME) {
 			g.drawImage(background1, 30, ybg, null);
 			g.drawImage(background1, 30, ybg2, null);
@@ -250,55 +246,57 @@ public class Game extends Canvas implements Runnable {
 			g.setColor(white);
 			g.drawRect(5, 5, 200, 20);
 
-
 			g.setColor(grey);
 			g.fillRect(WIDTH * 15 / 10, 5, 80, 20);
 
 			Font fnt0 = new Font("arial", Font.BOLD, 13);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
-			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 15 / 10, 20); // Change the variable from enemy_killed to getScore
+			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 15 / 10, 20); // Change
+																						// the
+																						// variable
+																						// from
+																						// enemy_killed
+																						// to
+																						// getScore
 
 		} else if (State == STATE.MENU) {
 			menu.render(g);
-		}
-		else if (State ==STATE.HELP)
-		{
+		} else if (State == STATE.HELP) {
 			Graphics2D g2d = (Graphics2D) g;
-			Font fnt0 = new Font("arial" , Font.BOLD, 59);
+			Font fnt0 = new Font("arial", Font.BOLD, 59);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
-			g.drawString("SPACE FIGHTER", Game.WIDTH/4	, 100);
-						
+			g.drawString("SPACE FIGHTER", Game.WIDTH / 4, 100);
+
 			Font fnt1 = new Font("Impact", Font.CENTER_BASELINE, 22);
 			g.setFont(fnt1);
-			
-			g.drawString("Up: 		Up Arrow", (Game.WIDTH >>1) + 100, 150);
-			g.drawString("Down: 	Down Arrow", (Game.WIDTH >>1) + 100, 200);
-			g.drawString("Left: 	Left Arrow", (Game.WIDTH >>1) + 100, 250);
-			g.drawString("Right: 	Right Arrow", (Game.WIDTH >>1) + 100, 300);
-			g.drawString("Shoot: 	Space", (Game.WIDTH >>1) + 100, 350);
-			
-			
-			Rectangle backButton = new Rectangle(Game.WIDTH/2+120, 380,100,50);
-			g.drawString("Go Back", backButton.x+19, backButton.y+30);
+
+			g.drawString("Up: 		Up Arrow", (Game.WIDTH >> 1) + 100, 150);
+			g.drawString("Down: 	Down Arrow", (Game.WIDTH >> 1) + 100, 200);
+			g.drawString("Left: 	Left Arrow", (Game.WIDTH >> 1) + 100, 250);
+			g.drawString("Right: 	Right Arrow", (Game.WIDTH >> 1) + 100, 300);
+			g.drawString("Shoot: 	Space", (Game.WIDTH >> 1) + 100, 350);
+
+			Rectangle backButton = new Rectangle(Game.WIDTH / 2 + 120, 380, 100, 50);
+			g.drawString("Go Back", backButton.x + 19, backButton.y + 30);
 			g2d.draw(backButton);
 
 		}
 		if (HEALTH <= 0) {
 			State = STATE.MENU;
-			//sound.playGame();
+			// sound.playGame();
 			sound.stopGame();
 			HEALTH = 200;
-			score = 0; //to reset score after game over
+			score = 0; // to reset score after game over
 			enemy_count = 8; // to reset enemy count after game over
 			enemy_killed = 0; // to reset enemy killed after game over
 			ea.removeAll(ea); // see if this works
 			eb.removeAll(eb); // see if this works
-			init(); //to start a new game after game over
+			init(); // to start a new game after game over
 			sound.stopGame();
 		}
-		
+
 		g.dispose();
 		bs.show();
 	}
@@ -324,9 +322,7 @@ public class Game extends Canvas implements Runnable {
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				State = STATE.MENU;
 			}
-		}
-		else if (State == STATE.MENU)
-		{
+		} else if (State == STATE.MENU) {
 			if (key == KeyEvent.VK_ESCAPE) {
 				State = STATE.GAME;
 			}
@@ -337,23 +333,21 @@ public class Game extends Canvas implements Runnable {
 		int key = e.getKeyCode();
 		if (State == STATE.GAME) {
 
-		if (key == KeyEvent.VK_RIGHT) {
-			p.setVelX(0);
-		} else if (key == KeyEvent.VK_LEFT) {
-			p.setVelX(0);
+			if (key == KeyEvent.VK_RIGHT) {
+				p.setVelX(0);
+			} else if (key == KeyEvent.VK_LEFT) {
+				p.setVelX(0);
 
-		} else if (key == KeyEvent.VK_DOWN) {
-			p.setVelY(0);
+			} else if (key == KeyEvent.VK_DOWN) {
+				p.setVelY(0);
 
-		} else if (key == KeyEvent.VK_UP) {
-			p.setVelY(0);
-		} else if (key == KeyEvent.VK_SPACE) {
-			sound.stopGunSound();
-			is_shooting = false;
+			} else if (key == KeyEvent.VK_UP) {
+				p.setVelY(0);
+			} else if (key == KeyEvent.VK_SPACE) {
+				sound.stopGunSound();
+				is_shooting = false;
+			}
 		}
-		}
-		
-		
 
 	}
 
@@ -399,11 +393,9 @@ public class Game extends Canvas implements Runnable {
 	public void setEnemy_killed(int enemy_killed) {
 		this.enemy_killed = enemy_killed;
 	}
-	
-	public  Player getPlayer()
-	{
+
+	public Player getPlayer() {
 		return p;
 	}
-	
 
 }

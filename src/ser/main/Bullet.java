@@ -13,12 +13,11 @@ public class Bullet extends GameObject implements EntityA {
 		super(x, y);
 		this.tex = tex;
 
-
 	}
 
 	public void tick() {
 		y -= 6;
-		//x += 10;
+		// x += 10;
 	}
 
 	public void render(Graphics g) {

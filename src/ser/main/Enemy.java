@@ -14,11 +14,10 @@ public class Enemy extends GameObject implements EntityB {
 
 	private Game game;
 	private Controller c;
-	
 
-	private int speed = r.nextInt(3) + 4/3;
+	private int speed = r.nextInt(3) + 4 / 3;
 	private Player p;
-	
+
 	public Enemy(double x, double y, Texture tex, Controller c, Game game) {
 		super(x, y);
 		this.tex = tex;
@@ -42,8 +41,8 @@ public class Enemy extends GameObject implements EntityB {
 			if (Physics.Collision(this, tempEnt)) {
 				c.removeEntity(tempEnt);
 				c.removeEntity(this);
-				game.setScore(); //adding score
-				game.setEnemy_killed(game.getEnemy_killed() + 1);  
+				game.setScore(); // adding score
+				game.setEnemy_killed(game.getEnemy_killed() + 1);
 
 			}
 		}
@@ -63,24 +62,21 @@ public class Enemy extends GameObject implements EntityB {
 	}
 
 	public void setY(double y) {
-		this.y = y*0.8;
+		this.y = y * 0.8;
 	}
 
 	public double getX() {
 		return x;
 	}
-	
+
 	public void setX(double x) {
-		if(x<this.x)
-		{
-		this.x -= 0.5;
-		}
-		else
-		{
+		if (x < this.x) {
+			this.x -= 0.5;
+		} else {
 			this.x += 0.5;
-	
+
 		}
-		
+
 	}
 
 }
