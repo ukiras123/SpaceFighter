@@ -46,6 +46,8 @@ public class Game extends Canvas implements Runnable {
 	private int enemy_killed = 0;
 	private static Sound sound;
 
+	private int level = 1;
+	
 	public void setScore() {
 		this.score += 1;
 	}
@@ -205,6 +207,7 @@ public class Game extends Canvas implements Runnable {
 		if (enemy_killed >= enemy_count) {
 			enemy_count += 2;
 			enemy_killed = 0;
+			level++;
 			c.createEnemy(enemy_count);
 		}
 
@@ -247,18 +250,18 @@ public class Game extends Canvas implements Runnable {
 			g.drawRect(5, 5, 200, 20);
 
 			g.setColor(grey);
-			g.fillRect(WIDTH * 15 / 10, 5, 80, 20);
+			g.fillRect(WIDTH * 2 - 70 , 5, 60, 20);
 
 			Font fnt0 = new Font("arial", Font.BOLD, 13);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
-			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 15 / 10, 20); // Change
-																						// the
-																						// variable
-																						// from
-																						// enemy_killed
-																						// to
-																						// getScore
+			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 2 - 70, 20);
+			
+			//g.setColor(grey);
+			//g.fillRect(WIDTH * 15 / 5, 5, 60, 20);
+			fnt0 = new Font("Monaco", Font.BOLD, 20);
+			g.setFont(fnt0);
+			g.drawString("Level : " + String.valueOf(level), WIDTH -30, 20);
 
 		} else if (State == STATE.MENU) {
 			menu.render(g);
