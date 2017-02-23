@@ -8,14 +8,11 @@ import ser.main.classes.EntityA;
 public class Bullet extends GameObject implements EntityA {
 
 	private Texture tex;
-	private Game game;
 
-	private int count = 0;
-	public Bullet(double x, double y, Texture tex, Game game) {
+	public Bullet(double x, double y, Texture tex) {
 		super(x, y);
 		this.tex = tex;
 
-		this.game = game;
 
 	}
 

@@ -1,10 +1,5 @@
 package ser.main;
 
-import java.io.IOException;
-import java.util.LinkedList;
-
-import javax.sound.sampled.LineUnavailableException;
-
 import ser.main.classes.EntityA;
 import ser.main.classes.EntityB;
 

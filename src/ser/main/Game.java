@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 
 import ser.main.classes.EntityA;
@@ -21,6 +20,10 @@ import ser.main.classes.EntityB;
 
 public class Game extends Canvas implements Runnable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 320;
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 2;
@@ -238,7 +241,6 @@ public class Game extends Canvas implements Runnable {
 			g.setColor(white);
 			g.drawRect(5, 5, 200, 20);
 
-			Graphics2D g2d = (Graphics2D) g;
 
 			g.setColor(grey);
 			g.fillRect(WIDTH * 15 / 10, 5, 80, 20);
@@ -278,12 +280,12 @@ public class Game extends Canvas implements Runnable {
 			State = STATE.MENU;
 			//sound.playGame();
 			sound.stopGame();
-			this.HEALTH = 200;
-			this.score = 0; //to reset score after game over
-			this.enemy_count = 8; // to reset enemy count after game over
-			this.enemy_killed = 0; // to reset enemy killed after game over
-			this.ea.removeAll(ea); // see if this works
-			this.eb.removeAll(eb); // see if this works
+			HEALTH = 200;
+			score = 0; //to reset score after game over
+			enemy_count = 8; // to reset enemy count after game over
+			enemy_killed = 0; // to reset enemy killed after game over
+			ea.removeAll(ea); // see if this works
+			eb.removeAll(eb); // see if this works
 			init(); //to start a new game after game over
 			sound.stopGame();
 		}
@@ -307,7 +309,7 @@ public class Game extends Canvas implements Runnable {
 			} else if (key == KeyEvent.VK_UP) {
 				p.setVelY(-5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
-				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
+				c.addEntity(new Bullet(p.getX(), p.getY(), tex));
 				sound.playGunSound();
 				is_shooting = true;
 			} else if (key == KeyEvent.VK_ESCAPE) {
