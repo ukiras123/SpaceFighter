@@ -41,12 +41,12 @@ public class Game extends Canvas implements Runnable {
 	private boolean is_shooting = false;
 
 	private int score = 0; // new variable to set score
-	private int enemy_count = 16;
+	private int enemy_count = 8;
 	private int enemy_killed = 0;
 	private static Sound sound;
 	
-	public void setScore(int enemy_count) {
-		this.score += enemy_killed;
+	public void setScore() {
+		this.score += 1;
 	}
 	
 	public int getScore() {
@@ -194,12 +194,7 @@ public class Game extends Canvas implements Runnable {
 			enemy_count += 2;
 			enemy_killed = 0;
 			c.createEnemy(enemy_count);
-			setScore(enemy_count); // added this line to keep score // canged to 5
-			enemy_killed = 0; //Moved the line to the bottom to keep score
-
 		}
-
-
 
 	}
 

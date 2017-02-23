@@ -41,6 +41,7 @@ public class Enemy extends GameObject implements EntityB {
 			if (Physics.Collision(this, tempEnt)) {
 				c.removeEntity(tempEnt);
 				c.removeEntity(this);
+				game.setScore(); //adding score
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
 
 			}
