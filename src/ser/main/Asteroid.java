@@ -15,7 +15,7 @@ public class Asteroid extends GameObject implements EntityB {
 	private Game game;
 	private Controller c;
 
-	private int speed = r.nextInt(9) + 1;
+	private int speed = r.nextInt(3) + 1;
 
 	public Asteroid(double x, double y, Texture tex, Controller c, Game game) {
 		super(x, y);
@@ -25,7 +25,7 @@ public class Asteroid extends GameObject implements EntityB {
 	}
 
 	public void tick() {
-		y += speed;
+		y += speed + (game.getLevel()/3.5);
 
 		if (y > Game.HEIGHT * Game.SCALE) {
 			x = r.nextInt(640);

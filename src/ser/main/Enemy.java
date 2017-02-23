@@ -27,7 +27,7 @@ public class Enemy extends GameObject implements EntityB {
 	}
 
 	public void tick() {
-		y += speed;
+		y += speed + (game.getLevel()/2);
 		setX(p.getX());
 
 		if (y > Game.HEIGHT * Game.SCALE) {

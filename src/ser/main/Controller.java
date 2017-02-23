@@ -24,10 +24,8 @@ public class Controller {
 		this.game = game;
 	}
 
-	public void createEnemy(int enemy_count) { // removed the int enemy_count
-												// arg
-		for (int i = 0; i < enemy_count / 2; i++) { // changed the enemy_count
-													// variable for a constant 5
+	public void createEnemy(int enemy_count) { 
+		for (int i = 0; i < enemy_count / 2; i++) { 
 			addEntity(new Enemy(r.nextInt(640), -10, tex, this, game));
 			addEntity(new Asteroid(r.nextInt(640), -10, tex, this, game));
 		}

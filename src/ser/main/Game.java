@@ -401,4 +401,7 @@ public class Game extends Canvas implements Runnable {
 		return p;
 	}
 
+	public int getLevel() {
+		return level;
+	}
 }
