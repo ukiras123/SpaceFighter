@@ -5,41 +5,38 @@ import java.awt.event.MouseListener;
 
 public class MoustInput implements MouseListener {
 
-
 	public void mousePressed(MouseEvent e) {
 
 		int mx = e.getX();
 		int my = e.getY();
-		
-		//Menu Page
-		if(Game.State == Game.STATE.MENU)
-		{
-		// Play Button
-		if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
-			if (my >= 150 && my <= 200) {
-				Game.State = Game.STATE.GAME;
+
+		// Menu Page
+		if (Game.State == Game.STATE.MENU) {
+			// Play Button
+			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
+				if (my >= 150 && my <= 200) {
+					Game.State = Game.STATE.GAME;
+				}
 			}
-		}
-		
-		// Menu Button
-		if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
-			if (my >= 250 && my <= 300) {
-				Game.State = Game.STATE.HELP;
+
+			// Menu Button
+			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
+				if (my >= 250 && my <= 300) {
+					Game.State = Game.STATE.HELP;
+				}
+			}
+
+			// Quit Button
+			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
+				if (my >= 350 && my <= 400) {
+					System.exit(1);
+				}
 			}
 		}
 
-		// Quit Button
-		if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
-			if (my >= 350 && my <= 400) {
-				System.exit(1);
-			}
-		}
-		}
-		
-		//Help Page
-		if (Game.State == Game.STATE.HELP)
-		{
-			//Back Button
+		// Help Page
+		if (Game.State == Game.STATE.HELP) {
+			// Back Button
 			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
 				if (my >= 380 && my <= 430) {
 					Game.State = Game.STATE.MENU;
@@ -51,25 +48,25 @@ public class MoustInput implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

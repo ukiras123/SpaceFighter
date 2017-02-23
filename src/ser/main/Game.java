@@ -303,7 +303,7 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) throws LineUnavailableException, IOException {
 		int key = e.getKeyCode();
 
 		if (State == STATE.GAME) {
@@ -319,15 +319,7 @@ public class Game extends Canvas implements Runnable {
 				p.setVelY(-5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
 				c.addEntity(new Bullet(p.getX(), p.getY(), tex));
-				try {
-					sound.playGunSound();
-				} catch (LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				sound.playGunSound();
 				is_shooting = true;
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				State = STATE.MENU;
@@ -412,9 +404,6 @@ public class Game extends Canvas implements Runnable {
 	{
 		return p;
 	}
-	
-	
-	
 	
 
 }
