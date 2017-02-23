@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 
 import ser.main.classes.EntityA;
@@ -36,9 +37,18 @@ public class Game extends Canvas implements Runnable {
 
 	private boolean is_shooting = false;
 
+	private int score = 0; // new variable to set score
 	private int enemy_count = 16;
 	private int enemy_killed = 0;
-	private Sound sound;
+	private static Sound sound;
+	
+	public void setScore(int enemy_count) {
+		this.score += enemy_killed;
+	}
+	
+	public int getScore() {
+		return score;
+	}
 	
 	public int getEnemt_killed() {
 		return enemy_killed;
@@ -46,6 +56,7 @@ public class Game extends Canvas implements Runnable {
 
 	public void setEnemt_killed(int enemy_killed) {
 		this.enemy_killed = enemy_killed;
+		this.enemy_killed += score;
 	}
 
 	private Player p;
@@ -58,7 +69,6 @@ public class Game extends Canvas implements Runnable {
 
 	public static int HEALTH = 100 * 2;
 	
-	int frames = 0;
 
 
 	public static enum STATE {
@@ -72,8 +82,8 @@ public class Game extends Canvas implements Runnable {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
 			spriteSheet = loader.loadImage("/sheet.png");
-			background = loader.loadImage("/background.gif");
-			background1 = loader.loadImage("/background.gif");
+			background = loader.loadImage("/starbg.png");
+			background1 = loader.loadImage("/starbg.png");
 			player = loader.loadImage("/space.gif");
 
 		} catch (IOException e) {
@@ -94,7 +104,9 @@ public class Game extends Canvas implements Runnable {
 
 		sound = new Sound();
 		c.createEnemy(enemy_count);
-
+		sound.stopGame(); // vhgm
+		sound.playMenu(); // vhgm
+		
 	}
 
 	private synchronized void start() {
@@ -121,40 +133,56 @@ public class Game extends Canvas implements Runnable {
 
 	
 	public void run() {
-		init();
-		long lastTime = System.nanoTime();
-		final double amountOfTicks = 60.0;
-		double ns = 1000000000 / amountOfTicks;
-		double delta = 0;
-		int updates = 0;
-		
-		long timer = System.currentTimeMillis();
-		while (running) {
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
-			if (delta >= 1) {
+	init();
+	sound.playGame();
+	long lastTime = System.nanoTime();
+	final double amountOfTicks = 60.0; // was 60.0 . higher means faster game-play
+	double ns = 1000000000 / amountOfTicks;
+	double delta = 0;
+	int updates = 0;
+	int frames = 0;
+	long timer = System.currentTimeMillis();
+	while (running) {
+		long now = System.nanoTime();
+		delta += (now - lastTime) / ns;
+		lastTime = now;
+		if (delta >= 1) {
 				tick();
-				updates++;
-				delta--;
-			}
-			render();
-			frames++;
-
-			if (System.currentTimeMillis() - timer > 1000) {
-				timer += 1000;
-				System.out.println(updates + " Ticks, Fps " + frames);
-				updates = 0;
-				frames = 0;
-			}
-
+			updates++;
+			delta--;
 		}
-		stop();
+		render();
+		frames++;
+
+		if (System.currentTimeMillis() - timer > 1000) {
+			timer += 1000;
+			System.out.println(updates + " Ticks, Fps " + frames);
+			updates = 0;
+			frames = 0;
+		}
 
 	}
+	stop();
+}
 
+	int ybg = 0;
+	int ybg2 = -((HEIGHT*2));
 	// everything that updates
 	private void tick() {
+		
+
+		if(ybg2<= 0){
+			ybg2 += 1 ;
+		}else{
+			ybg2 = -((HEIGHT*2));
+		}
+		
+		if(ybg<=(HEIGHT*2)){
+			ybg += 1 ;
+		}else{
+			ybg = 0;
+		}
+		
 		if (State == STATE.GAME) {
 			p.tick();
 			c.tick();
@@ -163,6 +191,8 @@ public class Game extends Canvas implements Runnable {
 			enemy_count += 2;
 			enemy_killed = 0;
 			c.createEnemy(enemy_count);
+			setScore(enemy_count); // added this line to keep score // canged to 5
+			enemy_killed = 0; //Moved the line to the bottom to keep score
 
 		}
 
@@ -180,14 +210,17 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		Graphics g = bs.getDrawGraphics();
-		//
+		
+		
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 
-		g.drawImage(background, 0, 0, null);
-
+		g.drawImage(background, 30, ybg, null);
+		g.drawImage(background, 30, ybg2, null);
+		
 		if (State == STATE.GAME) {
-			g.drawImage(background1, 0, 0, null);
+			g.drawImage(background1, 30, ybg, null);
+			g.drawImage(background1, 30, ybg2, null);
 			p.render(g);
 			c.render(g);
 
@@ -213,7 +246,7 @@ public class Game extends Canvas implements Runnable {
 			Font fnt0 = new Font("arial", Font.BOLD, 13);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
-			g.drawString("Score : " + String.valueOf(enemy_killed), WIDTH * 15 / 10, 20);
+			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 15 / 10, 20); // Change the variable from enemy_killed to getScore
 
 		} else if (State == STATE.MENU) {
 			menu.render(g);
@@ -243,7 +276,16 @@ public class Game extends Canvas implements Runnable {
 		}
 		if (HEALTH <= 0) {
 			State = STATE.MENU;
+			//sound.playGame();
+			sound.stopGame();
 			this.HEALTH = 200;
+			this.score = 0; //to reset score after game over
+			this.enemy_count = 8; // to reset enemy count after game over
+			this.enemy_killed = 0; // to reset enemy killed after game over
+			this.ea.removeAll(ea); // see if this works
+			this.eb.removeAll(eb); // see if this works
+			init(); //to start a new game after game over
+			sound.stopGame();
 		}
 		
 		g.dispose();
@@ -268,12 +310,22 @@ public class Game extends Canvas implements Runnable {
 				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
 				sound.playGunSound();
 				is_shooting = true;
+			} else if (key == KeyEvent.VK_ESCAPE) {
+				State = STATE.MENU;
+			}
+		}
+		else if (State == STATE.MENU)
+		{
+			if (key == KeyEvent.VK_ESCAPE) {
+				State = STATE.GAME;
 			}
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
+		if (State == STATE.GAME) {
+
 		if (key == KeyEvent.VK_RIGHT) {
 			p.setVelX(0);
 		} else if (key == KeyEvent.VK_LEFT) {
@@ -288,6 +340,9 @@ public class Game extends Canvas implements Runnable {
 			sound.stopGunSound();
 			is_shooting = false;
 		}
+		}
+		
+		
 
 	}
 
@@ -339,10 +394,7 @@ public class Game extends Canvas implements Runnable {
 		return p;
 	}
 	
-	public int getFrame()
-	{
-		return frames;
-	}
+	
 	
 	
 

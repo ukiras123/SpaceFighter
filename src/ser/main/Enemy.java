@@ -15,7 +15,7 @@ public class Enemy extends GameObject implements EntityB {
 	private Game game;
 	private Controller c;
 
-	private int speed = r.nextInt(3) + 1;
+	private int speed = r.nextInt(3) + 4/3;
 	private Player p;
 	
 	public Enemy(double x, double y, Texture tex, Controller c, Game game) {

@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javax.swing.text.html.parser.Entity;
-
 import ser.main.classes.EntityA;
 import ser.main.classes.EntityB;
 
@@ -20,14 +18,16 @@ public class Controller {
 	private Texture tex;
 	Random r = new Random();
 	private Game game;
+
 	
 	public Controller(Texture tex, Game game) {
 		this.tex = tex;
 		this.game = game;
 	}
 
-	public void createEnemy(int eneny_count) {
-		for (int i = 0; i < eneny_count/2; i++) {
+	
+	public void createEnemy(int enemy_count) { //removed the int enemy_count arg
+		for (int i = 0; i < enemy_count/2; i++) { // changed the enemy_count variable for a constant 5
 			addEntity(new Enemy(r.nextInt(640), -10, tex, this, game));
 			addEntity(new Asteroid(r.nextInt(640), -10, tex, this, game));
 		}
@@ -57,8 +57,6 @@ public class Controller {
 
 			enta.render(g);
 		}
-		
-
 		// B Class
 		for (int i = 0; i < eb.size(); i++) {
 			entb = eb.get(i);
@@ -74,6 +72,7 @@ public class Controller {
 
 	public void removeEntity(EntityA block) {
 		ea.remove(block);
+		
 	}
 
 	public void addEntity(EntityB block) {
