@@ -146,7 +146,12 @@ public class Game extends Canvas implements Runnable {
 	
 	public void run() {
 	init();
-	sound.playGame();
+	try {
+		sound.playGame();
+	} catch (LineUnavailableException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	long lastTime = System.nanoTime();
 	final double amountOfTicks = 60.0; // was 60.0 . higher means faster game-play
 	double ns = 1000000000 / amountOfTicks;

@@ -27,7 +27,6 @@ class Sound {
 		url3 = Sound.class.getResource("/ad.wav");
 
 		url4 = Sound.class.getResource("/ad.wav");
-
 		try {
 			game = AudioSystem.getAudioInputStream(url4);
 			menu = AudioSystem.getAudioInputStream(url3);
@@ -42,6 +41,7 @@ class Sound {
 	}
 
 	public void playGunSound() throws LineUnavailableException, IOException {
+		gunClip = AudioSystem.getClip();
 		gunClip.open(gun);
 		gunClip.start();
 	}
@@ -51,6 +51,7 @@ class Sound {
 	}
 
 	public void playExplosion() throws LineUnavailableException, IOException {
+		boomClip = AudioSystem.getClip();
 		boomClip.open(boom);
 		boomClip.start();
 	}
@@ -60,8 +61,10 @@ class Sound {
 	}
 
 	public void playMenu() throws LineUnavailableException, IOException {
-		if(gamePlaying = false)
+		if(gamePlaying == false)
 		{
+		menuClip = AudioSystem.getClip();
+
 		try {
 			menuClip.open(menu);
 		} catch (LineUnavailableException e) {
@@ -80,16 +83,17 @@ class Sound {
 	}
 
 	public void stopMenu() {
-		if(gamePlaying = true)
+		if(gamePlaying == true)
 		{
 		menuClip.stop();
 		menuPlaying = false;
 		}
 	}
 
-	public void playGame() {
-		if(gamePlaying = false)
+	public void playGame() throws LineUnavailableException {
+		if(gamePlaying == false)
 		{
+		gameClip = AudioSystem.getClip();
 		try {
 			gameClip.open(game);
 		} catch (
@@ -106,7 +110,7 @@ class Sound {
 	}
 
 	public void stopGame() { 
-		if(gamePlaying = true)
+		if(gamePlaying == true)
 		{
 		gameClip.stop();
 		gamePlaying = false;
