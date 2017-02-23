@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 
 import ser.main.classes.EntityA;
@@ -108,7 +109,15 @@ public class Game extends Canvas implements Runnable {
 		sound = new Sound();
 		c.createEnemy(enemy_count);
 		sound.stopGame(); // vhgm
-		sound.playMenu(); // vhgm
+		try {
+			sound.playMenu();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // vhgm
 		
 	}
 
@@ -305,7 +314,15 @@ public class Game extends Canvas implements Runnable {
 				p.setVelY(-5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
 				c.addEntity(new Bullet(p.getX(), p.getY(), tex));
-				sound.playGunSound();
+				try {
+					sound.playGunSound();
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				is_shooting = true;
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				State = STATE.MENU;

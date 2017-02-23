@@ -14,6 +14,7 @@ public class Enemy extends GameObject implements EntityB {
 
 	private Game game;
 	private Controller c;
+	
 
 	private int speed = r.nextInt(3) + 4/3;
 	private Player p;
@@ -42,7 +43,7 @@ public class Enemy extends GameObject implements EntityB {
 				c.removeEntity(tempEnt);
 				c.removeEntity(this);
 				game.setScore(); //adding score
-				game.setEnemy_killed(game.getEnemy_killed() + 1);
+				game.setEnemy_killed(game.getEnemy_killed() + 1);  
 
 			}
 		}
