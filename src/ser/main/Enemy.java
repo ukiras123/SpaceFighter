@@ -14,7 +14,7 @@ public class Enemy extends GameObject implements EntityB {
 
 	private Game game;
 	private Controller c;
-
+	private int level;
 	private int speed = r.nextInt(3) + 4 / 3;
 	private Player p;
 
@@ -24,10 +24,11 @@ public class Enemy extends GameObject implements EntityB {
 		this.c = c;
 		this.game = game;
 		p = game.getPlayer();
+		level = game.getLevel();
 	}
 
 	public void tick() {
-		y += speed + (game.getLevel()/2);
+		y += speed + (game.getLevel() / 2);
 		setX(p.getX());
 
 		if (y > Game.HEIGHT * Game.SCALE) {
@@ -50,7 +51,13 @@ public class Enemy extends GameObject implements EntityB {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(tex.enemy, (int) x, (int) y, null);
+		if (level >= 1 && level <= 3) {
+			g.drawImage(tex.enemy[0], (int) x, (int) y, null);
+		} else if (level > 3 && level <= 6) {
+			g.drawImage(tex.enemy[1], (int) x, (int) y, null);
+		} else {
+			g.drawImage(tex.enemy[2], (int) x, (int) y, null);
+		}
 	}
 
 	public Rectangle getBounds() {

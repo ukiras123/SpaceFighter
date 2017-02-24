@@ -2,6 +2,7 @@ package ser.main;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Random;
 
 import ser.main.classes.EntityA;
 import ser.main.classes.EntityB;
@@ -14,14 +15,18 @@ public class Player extends GameObject implements EntityA {
 	private Texture tex;
 
 	Game game;
-
+	private int level;
 	Controller controller;
+	Random rand = new Random();
+	int randomPlayer;
 
 	public Player(double x, double y, Texture tex, Game game, Controller controller) {
 		super(x, y);
 		this.tex = tex;
 		this.game = game;
 		this.controller = controller;
+		level = game.getLevel();
+		randomPlayer = rand.nextInt(5);
 	}
 
 	public void tick() {
@@ -50,7 +55,12 @@ public class Player extends GameObject implements EntityA {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(tex.player, (int) x, (int) y, null);
+		if (randomPlayer == 5) {
+			g.drawImage(tex.mainPlayer, (int) x, (int) y, null);
+
+		} else {
+			g.drawImage(tex.players[randomPlayer], (int) x, (int) y, null);
+		}
 	}
 
 	public Rectangle getBounds() {

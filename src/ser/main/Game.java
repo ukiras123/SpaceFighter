@@ -37,7 +37,8 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage spriteSheet = null;
 	private BufferedImage background = null;
 	private BufferedImage background1 = null;
-	private BufferedImage player = null;
+	private BufferedImage mainPlayer = null;
+	private BufferedImage players = null;
 
 	private boolean is_shooting = false;
 
@@ -46,8 +47,8 @@ public class Game extends Canvas implements Runnable {
 	private int enemy_killed = 0;
 	private static Sound sound;
 
-	private int level = 1;
-	
+	private static int level = 1;
+
 	public void setScore() {
 		this.score += 1;
 	}
@@ -88,8 +89,7 @@ public class Game extends Canvas implements Runnable {
 			spriteSheet = loader.loadImage("/sheet.png");
 			background = loader.loadImage("/starbg.png");
 			background1 = loader.loadImage("/starbg.png");
-			player = loader.loadImage("/space.gif");
-
+			mainPlayer = loader.loadImage("/space.gif");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -250,18 +250,16 @@ public class Game extends Canvas implements Runnable {
 			g.drawRect(5, 5, 200, 20);
 
 			g.setColor(grey);
-			g.fillRect(WIDTH * 2 - 70 , 5, 60, 20);
+			g.fillRect(WIDTH * 2 - 70, 5, 65, 20);
 
 			Font fnt0 = new Font("arial", Font.BOLD, 13);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
 			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 2 - 70, 20);
-			
-			//g.setColor(grey);
-			//g.fillRect(WIDTH * 15 / 5, 5, 60, 20);
+
 			fnt0 = new Font("Monaco", Font.BOLD, 20);
 			g.setFont(fnt0);
-			g.drawString("Level : " + String.valueOf(level), WIDTH -30, 20);
+			g.drawString("Level : " + String.valueOf(level), WIDTH - 30, 20);
 
 		} else if (State == STATE.MENU) {
 			menu.render(g);
@@ -319,7 +317,7 @@ public class Game extends Canvas implements Runnable {
 			} else if (key == KeyEvent.VK_UP) {
 				p.setVelY(-5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
-				c.addEntity(new Bullet(p.getX(), p.getY(), tex));
+				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
 				sound.playGunSound();
 				is_shooting = true;
 			} else if (key == KeyEvent.VK_ESCAPE) {
@@ -378,7 +376,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public BufferedImage getPlayerBuffer() {
-		return player;
+		return mainPlayer;
 	}
 
 	public int getEnemy_count() {

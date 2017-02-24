@@ -24,8 +24,8 @@ public class Controller {
 		this.game = game;
 	}
 
-	public void createEnemy(int enemy_count) { 
-		for (int i = 0; i < enemy_count / 2; i++) { 
+	public void createEnemy(int enemy_count) {
+		for (int i = 0; i < enemy_count / 2; i++) {
 			addEntity(new Enemy(r.nextInt(640), -10, tex, this, game));
 			addEntity(new Asteroid(r.nextInt(640), -10, tex, this, game));
 		}

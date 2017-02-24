@@ -25,7 +25,7 @@ public class Asteroid extends GameObject implements EntityB {
 	}
 
 	public void tick() {
-		y += speed + (game.getLevel()/3.5);
+		y += speed + (game.getLevel() / 3.5);
 
 		if (y > Game.HEIGHT * Game.SCALE) {
 			x = r.nextInt(640);
@@ -46,7 +46,7 @@ public class Asteroid extends GameObject implements EntityB {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(tex.asteroid, (int) x, (int) y, null);
+		g.drawImage(tex.asteroid[0], (int) x, (int) y, null);
 	}
 
 	public Rectangle getBounds() {
