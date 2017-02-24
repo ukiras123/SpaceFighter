@@ -85,7 +85,12 @@ public class Game extends Canvas implements Runnable {
 	public void init() {
 		requestFocus();
 		highScore = new HighscoreUtil();
-		oldHighScore = highScore.getScore();
+		try {
+			oldHighScore = highScore.getScore();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
@@ -298,7 +303,12 @@ public class Game extends Canvas implements Runnable {
 			g.drawString("Your Score : " + score, restartGame.x - 50, restartGame.y + 100);
 			fnt1 = new Font("arial", Font.BOLD, 50);
 			g.setFont(fnt1);
-			g.drawString("High Score : " + highScore.getScore(), restartGame.x - 120, restartGame.y + 150);
+			try {
+				g.drawString("High Score : " + highScore.getScore(), restartGame.x - 120, restartGame.y + 150);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 		if (HEALTH <= 0) {
