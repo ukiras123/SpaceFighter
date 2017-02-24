@@ -103,10 +103,8 @@ public class Sound {
 	}
 
 	public void stopGame() {
-		
 			gameClip.stop();
-			gamePlaying = false;
-		
+			gamePlaying = false;	
 	}
 
 }

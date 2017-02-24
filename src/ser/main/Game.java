@@ -285,11 +285,18 @@ public class Game extends Canvas implements Runnable {
 
 			Font fnt1 = new Font("arial", Font.BOLD, 15);
 			g.setFont(fnt1);
-			g.drawString("Main Menu", restartGame.x + 15, restartGame.y + 30);
-			g2d.draw(restartGame);
 			g.drawString("Cont. : "+ totalContinue, continueGame.x + 19, continueGame.y + 30);
 			g2d.draw(continueGame);
-		
+			g.drawString("Main Menu", restartGame.x + 15, restartGame.y + 30);
+			g2d.draw(restartGame);
+			fnt1 = new Font("arial", Font.BOLD, 30);
+			g.setFont(fnt1);
+			g.drawString("Your Score : "+ score, restartGame.x - 50 , restartGame.y + 100);
+			fnt1 = new Font("arial", Font.BOLD, 50);
+			g.setFont(fnt1);
+			g.drawString("High Score : "+ score, restartGame.x - 100 , restartGame.y + 150);
+
+
 		}
 		if (HEALTH <= 0) {
 			State =STATE.GAMEOVER;
