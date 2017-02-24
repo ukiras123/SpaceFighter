@@ -45,7 +45,7 @@ public class Game extends Canvas implements Runnable {
 	private int enemy_count = 8;
 	private int enemy_killed = 0;
 	private static Sound sound;
-
+	private HighscoreUtil highScore;
 	private static int level = 1;
 
 	public void setScore() {
@@ -74,7 +74,7 @@ public class Game extends Canvas implements Runnable {
 	public LinkedList<EntityB> eb;
 
 	public static int HEALTH = 100 * 2;
-
+	private int oldHighScore;
 	public static enum STATE {
 		MENU, GAME, HELP, GAMEOVER, RESTART
 	};
@@ -83,6 +83,9 @@ public class Game extends Canvas implements Runnable {
 
 	public void init() {
 		requestFocus();
+		highScore = new HighscoreUtil();			
+		oldHighScore = highScore.getScore();
+
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
 			spriteSheet = loader.loadImage("/sheet.png");
@@ -104,7 +107,7 @@ public class Game extends Canvas implements Runnable {
 
 		ea = c.getEntityA();
 		eb = c.getEntityB();
-
+		
 		sound = new Sound();
 		c.createEnemy(enemy_count);
 		try {
@@ -272,11 +275,10 @@ public class Game extends Canvas implements Runnable {
 			g.drawString("Go Back", backButton.x + 19, backButton.y + 30);
 			g2d.draw(backButton);
 
-		} else if (State == STATE.GAMEOVER)
-		{
+		} else if (State == STATE.GAMEOVER) {
 			Rectangle restartGame = new Rectangle(Game.WIDTH / 2 + 120, 250, 100, 50);
 			Rectangle continueGame = new Rectangle(Game.WIDTH / 2 + 120, 150, 100, 50);
-			
+
 			Graphics2D g2d = (Graphics2D) g;
 			Font fnt0 = new Font("arial", Font.BOLD, 59);
 			g.setFont(fnt0);
@@ -285,26 +287,28 @@ public class Game extends Canvas implements Runnable {
 
 			Font fnt1 = new Font("arial", Font.BOLD, 15);
 			g.setFont(fnt1);
-			g.drawString("Cont. : "+ totalContinue, continueGame.x + 19, continueGame.y + 30);
+			g.drawString("Cont. : " + totalContinue, continueGame.x + 19, continueGame.y + 30);
 			g2d.draw(continueGame);
 			g.drawString("Main Menu", restartGame.x + 15, restartGame.y + 30);
 			g2d.draw(restartGame);
 			fnt1 = new Font("arial", Font.BOLD, 30);
 			g.setFont(fnt1);
-			g.drawString("Your Score : "+ score, restartGame.x - 50 , restartGame.y + 100);
+			g.drawString("Your Score : " + score, restartGame.x - 50, restartGame.y + 100);
 			fnt1 = new Font("arial", Font.BOLD, 50);
 			g.setFont(fnt1);
-			g.drawString("High Score : "+ score, restartGame.x - 100 , restartGame.y + 150);
-
+			g.drawString("High Score : " + highScore.getScore(), restartGame.x - 100, restartGame.y + 150);
 
 		}
 		if (HEALTH <= 0) {
-			State =STATE.GAMEOVER;
+			State = STATE.GAMEOVER;
 			HEALTH = 200;
+			if(oldHighScore<score)
+			{
+			highScore.setScore(score);
+			}
 		}
 
-		if (State == STATE.RESTART)
-		{
+		if (State == STATE.RESTART) {
 			sound.stopGame();
 			score = 0; // to reset score after game over
 			level = 1;
@@ -315,7 +319,7 @@ public class Game extends Canvas implements Runnable {
 			init(); // to start a new game after game over
 			State = STATE.MENU;
 			HEALTH = 200;
-			
+
 		}
 
 		g.dispose();
@@ -327,15 +331,15 @@ public class Game extends Canvas implements Runnable {
 
 		if (State == STATE.GAME) {
 			if (key == KeyEvent.VK_RIGHT) {
-				p.setVelX(4+level*0.5);
+				p.setVelX(4 + level * 0.5);
 			} else if (key == KeyEvent.VK_LEFT) {
-				p.setVelX(-4-level*0.5);
+				p.setVelX(-4 - level * 0.5);
 
 			} else if (key == KeyEvent.VK_DOWN) {
-				p.setVelY(4+level*0.5);
+				p.setVelY(4 + level * 0.5);
 
 			} else if (key == KeyEvent.VK_UP) {
-				p.setVelY(-4-level*0.5);
+				p.setVelY(-4 - level * 0.5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
 				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
 				sound.playGunSound();
@@ -422,13 +426,12 @@ public class Game extends Canvas implements Runnable {
 	public int getLevel() {
 		return level;
 	}
-	
-	public static int getTotalContinue()
-	{
+
+	public static int getTotalContinue() {
 		return totalContinue;
 	}
-	public static void setTotalContinue(int totalContinue)
-	{
+
+	public static void setTotalContinue(int totalContinue) {
 		Game.totalContinue = totalContinue;
 	}
 }
