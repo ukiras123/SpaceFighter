@@ -75,6 +75,7 @@ public class Game extends Canvas implements Runnable {
 
 	public static int HEALTH = 100 * 2;
 	private int oldHighScore;
+
 	public static enum STATE {
 		MENU, GAME, HELP, GAMEOVER, RESTART
 	};
@@ -83,7 +84,7 @@ public class Game extends Canvas implements Runnable {
 
 	public void init() {
 		requestFocus();
-		highScore = new HighscoreUtil();			
+		highScore = new HighscoreUtil();
 		oldHighScore = highScore.getScore();
 
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -107,7 +108,7 @@ public class Game extends Canvas implements Runnable {
 
 		ea = c.getEntityA();
 		eb = c.getEntityB();
-		
+
 		sound = new Sound();
 		c.createEnemy(enemy_count);
 		try {
@@ -242,12 +243,12 @@ public class Game extends Canvas implements Runnable {
 			g.drawRect(5, 5, 200, 20);
 
 			g.setColor(grey);
-			g.fillRect(WIDTH * 2 - 70, 5, 65, 20);
+			g.fillRect(WIDTH * 2 - 77, 5, 80, 20);
 
 			Font fnt0 = new Font("arial", Font.BOLD, 13);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
-			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 2 - 70, 20);
+			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 2 - 75, 20);
 
 			fnt0 = new Font("Monaco", Font.BOLD, 20);
 			g.setFont(fnt0);
@@ -269,8 +270,9 @@ public class Game extends Canvas implements Runnable {
 			g.drawString("Down: 	Down Arrow", (Game.WIDTH >> 1) + 100, 200);
 			g.drawString("Left: 	Left Arrow", (Game.WIDTH >> 1) + 100, 250);
 			g.drawString("Right: 	Right Arrow", (Game.WIDTH >> 1) + 100, 300);
-			g.drawString("Shoot: 	Space", (Game.WIDTH >> 1) + 100, 350);
+			g.drawString("Shoot: 	Space", (Game.WIDTH / 2) + 50, 350);
 
+			g.drawString("Pause: 	ESC", (Game.WIDTH / 2) + 200, 350);
 			Rectangle backButton = new Rectangle(Game.WIDTH / 2 + 120, 380, 100, 50);
 			g.drawString("Go Back", backButton.x + 19, backButton.y + 30);
 			g2d.draw(backButton);
@@ -296,15 +298,14 @@ public class Game extends Canvas implements Runnable {
 			g.drawString("Your Score : " + score, restartGame.x - 50, restartGame.y + 100);
 			fnt1 = new Font("arial", Font.BOLD, 50);
 			g.setFont(fnt1);
-			g.drawString("High Score : " + highScore.getScore(), restartGame.x - 100, restartGame.y + 150);
+			g.drawString("High Score : " + highScore.getScore(), restartGame.x - 120, restartGame.y + 150);
 
 		}
 		if (HEALTH <= 0) {
 			State = STATE.GAMEOVER;
 			HEALTH = 200;
-			if(oldHighScore<score)
-			{
-			highScore.setScore(score);
+			if (oldHighScore < score) {
+				highScore.setScore(score);
 			}
 		}
 

@@ -55,9 +55,12 @@ public class Enemy extends GameObject implements EntityB {
 			g.drawImage(tex.enemy[0], (int) x, (int) y, null);
 		} else if (level > 3 && level <= 6) {
 			g.drawImage(tex.enemy[1], (int) x, (int) y, null);
-		} else {
+		} else if (level > 6 && level <= 9) {
 			g.drawImage(tex.enemy[2], (int) x, (int) y, null);
-		}
+		} else if (level > 9 && level <= 11) {
+			g.drawImage(tex.enemy[3], (int) x, (int) y, null);
+		} else
+			g.drawImage(tex.enemy[4], (int) x, (int) y, null);
 	}
 
 	public Rectangle getBounds() {
