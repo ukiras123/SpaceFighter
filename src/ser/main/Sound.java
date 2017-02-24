@@ -28,9 +28,9 @@ public class Sound {
 
 		url2 = Sound.class.getResource("/boom.wav");
 
-		url3 = Sound.class.getResource("/ad.wav");
+		url3 = Sound.class.getResource("/adventure.wav");
 
-		url4 = Sound.class.getResource("/ad.wav");
+		url4 = Sound.class.getResource("/adventure.wav");
 
 		gun = Applet.newAudioClip(url1);
 
