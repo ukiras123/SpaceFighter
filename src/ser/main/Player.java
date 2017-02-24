@@ -15,7 +15,6 @@ public class Player extends GameObject implements EntityA {
 	private Texture tex;
 
 	Game game;
-	private int level;
 	Controller controller;
 	Random rand = new Random();
 	int randomPlayer;
@@ -25,7 +24,6 @@ public class Player extends GameObject implements EntityA {
 		this.tex = tex;
 		this.game = game;
 		this.controller = controller;
-		level = game.getLevel();
 		randomPlayer = rand.nextInt(5);
 	}
 
