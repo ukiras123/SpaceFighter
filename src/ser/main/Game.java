@@ -32,7 +32,7 @@ public class Game extends Canvas implements Runnable {
 
 	private boolean running = false;
 	private Thread thread;
-
+	private int totalContinue = 3;
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet = null;
 	private BufferedImage background = null;
@@ -285,9 +285,9 @@ public class Game extends Canvas implements Runnable {
 
 			Font fnt1 = new Font("arial", Font.BOLD, 15);
 			g.setFont(fnt1);
-			g.drawString("Restart...", restartGame.x + 19, restartGame.y + 30);
+			g.drawString("Main Menu", restartGame.x + 15, restartGame.y + 30);
 			g2d.draw(restartGame);
-			g.drawString("Continue", continueGame.x + 19, continueGame.y + 30);
+			g.drawString("Cont. : "+ totalContinue, continueGame.x + 19, continueGame.y + 30);
 			g2d.draw(continueGame);
 		
 		}
@@ -299,15 +299,16 @@ public class Game extends Canvas implements Runnable {
 		if (State == STATE.RESTART)
 		{
 			sound.stopGame();
-			init(); // to start a new game after game over
-			State = STATE.MENU;
-			HEALTH = 200;
 			score = 0; // to reset score after game over
 			level = 1;
 			enemy_count = 8; // to reset enemy count after game over
 			enemy_killed = 0; // to reset enemy killed after game over
 			ea.removeAll(ea); // see if this works
 			eb.removeAll(eb); // see if this works
+			init(); // to start a new game after game over
+			State = STATE.MENU;
+			HEALTH = 200;
+			
 		}
 
 		g.dispose();
