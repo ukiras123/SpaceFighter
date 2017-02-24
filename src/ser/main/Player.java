@@ -55,7 +55,7 @@ public class Player extends GameObject implements EntityA {
 	}
 
 	public void render(Graphics g) {
-		if (randomPlayer == 5) {
+		if (randomPlayer == 4) {
 			g.drawImage(tex.mainPlayer, (int) x, (int) y, null);
 
 		} else {

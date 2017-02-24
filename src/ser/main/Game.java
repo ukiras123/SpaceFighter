@@ -290,6 +290,7 @@ public class Game extends Canvas implements Runnable {
 			sound.stopGame();
 			HEALTH = 200;
 			score = 0; // to reset score after game over
+			level = 1;
 			enemy_count = 8; // to reset enemy count after game over
 			enemy_killed = 0; // to reset enemy killed after game over
 			ea.removeAll(ea); // see if this works
