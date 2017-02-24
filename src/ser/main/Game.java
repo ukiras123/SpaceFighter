@@ -32,7 +32,7 @@ public class Game extends Canvas implements Runnable {
 
 	private boolean running = false;
 	private Thread thread;
-	private int totalContinue = 3;
+	private static int totalContinue = 3;
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet = null;
 	private BufferedImage background = null;
@@ -414,5 +414,14 @@ public class Game extends Canvas implements Runnable {
 
 	public int getLevel() {
 		return level;
+	}
+	
+	public static int getTotalContinue()
+	{
+		return totalContinue;
+	}
+	public static void setTotalContinue(int totalContinue)
+	{
+		Game.totalContinue = totalContinue;
 	}
 }
