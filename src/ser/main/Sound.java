@@ -19,10 +19,9 @@ public class Sound {
 	private Clip  gameClip;
 	private AudioInputStream  game;
 
-	public static boolean menuPlaying, gamePlaying, explosionOn;
+	public static boolean gamePlaying, explosionOn;
 
 	public Sound() {
-		menuPlaying = false;
 		gamePlaying = false;
 		url1 = Sound.class.getResource("/laserSound.wav");
 
@@ -86,7 +85,7 @@ public class Sound {
 	}
 */
 	public void playGame() throws LineUnavailableException {
-		if (gamePlaying == false && menuPlaying == false) {
+		if (gamePlaying == false) {
 			gameClip = AudioSystem.getClip();
 			try {
 				gameClip.open(game);
