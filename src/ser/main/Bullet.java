@@ -19,8 +19,13 @@ public class Bullet extends GameObject implements EntityA {
 	}
 
 	public void tick() {
-		y -= 6;
-		// x += 10;
+		if (level >= 1 && level <= 3) {
+			y -= 6;
+		} else if (level > 3 && level <= 6) {
+			y -= 9;
+		} else {
+			y -= 12;
+		}
 	}
 
 	public void render(Graphics g) {
