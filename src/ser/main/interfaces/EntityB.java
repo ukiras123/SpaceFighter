@@ -1,4 +1,4 @@
-package ser.main.classes;
+package ser.main.interfaces;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

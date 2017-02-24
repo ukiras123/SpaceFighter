@@ -31,7 +31,7 @@ public class Texture {
 		players[0] = ss.grabImage(1, 4, 32, 32);
 		players[1] = ss.grabImage(2, 4, 32, 32);
 		players[2] = ss.grabImage(3, 4, 32, 32);
-		players[2] = ss.grabImage(4, 4, 32, 32);
+		players[3] = ss.grabImage(4, 4, 32, 32);
 		mainPlayer = game.getPlayerBuffer();
 	}
 }

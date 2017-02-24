@@ -16,8 +16,8 @@ import java.util.LinkedList;
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 
-import ser.main.classes.EntityA;
-import ser.main.classes.EntityB;
+import ser.main.interfaces.EntityA;
+import ser.main.interfaces.EntityB;
 
 public class Game extends Canvas implements Runnable {
 

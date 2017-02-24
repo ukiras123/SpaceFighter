@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
-import ser.main.classes.EntityA;
-import ser.main.classes.EntityB;
+import ser.main.interfaces.EntityA;
+import ser.main.interfaces.EntityB;
 
 public class Controller {
 

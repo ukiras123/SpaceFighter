@@ -3,7 +3,7 @@ package ser.main;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import ser.main.classes.EntityA;
+import ser.main.interfaces.EntityA;
 
 public class Bullet extends GameObject implements EntityA {
 

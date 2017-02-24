@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import ser.main.classes.EntityA;
-import ser.main.classes.EntityB;
+import ser.main.interfaces.EntityA;
+import ser.main.interfaces.EntityB;
 
 public class Enemy extends GameObject implements EntityB {
 

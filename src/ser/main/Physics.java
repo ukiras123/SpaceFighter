@@ -1,7 +1,7 @@
 package ser.main;
 
-import ser.main.classes.EntityA;
-import ser.main.classes.EntityB;
+import ser.main.interfaces.EntityA;
+import ser.main.interfaces.EntityB;
 
 public class Physics {
 	private static Sound sound = new Sound();;
