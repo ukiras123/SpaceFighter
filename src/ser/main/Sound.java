@@ -13,11 +13,11 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Sound {
-	private URL url1, url2, url3, url4;
+	private URL url1, url2,  url3;
 	private AudioClip gun, boom;
 
-	private Clip menuClip, gameClip;
-	private AudioInputStream menu, game;
+	private Clip  gameClip;
+	private AudioInputStream  game;
 
 	public static boolean menuPlaying, gamePlaying, explosionOn;
 
@@ -30,15 +30,13 @@ public class Sound {
 
 		url3 = Sound.class.getResource("/adventure.wav");
 
-		url4 = Sound.class.getResource("/adventure.wav");
 
 		gun = Applet.newAudioClip(url1);
 
 		boom = Applet.newAudioClip(url2);
 
 		try {
-			game = AudioSystem.getAudioInputStream(url4);
-			menu = AudioSystem.getAudioInputStream(url3);
+			game = AudioSystem.getAudioInputStream(url3);
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
