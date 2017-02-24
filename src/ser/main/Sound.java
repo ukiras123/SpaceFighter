@@ -62,9 +62,9 @@ public class Sound {
 	public void stopExplosion() {
 		boom.stop();
 	}
-
+/*
 	public void playMenu() throws LineUnavailableException, IOException {
-		if (gamePlaying == false) {
+		if (gamePlaying == false && menuPlaying == false) {
 			menuClip = AudioSystem.getClip();
 
 			try {
@@ -86,9 +86,9 @@ public class Sound {
 			menuPlaying = false;
 		}
 	}
-
+*/
 	public void playGame() throws LineUnavailableException {
-		if (gamePlaying == false) {
+		if (gamePlaying == false && menuPlaying == false) {
 			gameClip = AudioSystem.getClip();
 			try {
 				gameClip.open(game);
@@ -106,10 +106,10 @@ public class Sound {
 	}
 
 	public void stopGame() {
-		if (gamePlaying == true) {
+		
 			gameClip.stop();
 			gamePlaying = false;
-		}
+		
 	}
 
 }

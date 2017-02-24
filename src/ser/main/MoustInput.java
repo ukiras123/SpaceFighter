@@ -43,6 +43,23 @@ public class MoustInput implements MouseListener {
 				}
 			}
 		}
+		
+		// Game Over Page
+		if (Game.State == Game.STATE.GAMEOVER) {
+			// Continue Button
+			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
+				if (my >= 150 && my <= 200) {
+					Game.State = Game.STATE.GAME;
+				}
+			} // Restart Button
+			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
+				if (my >= 250 && my <= 300) {
+					Game.State = Game.STATE.RESTART;
+				}
+			}
+
+		}
+		
 	}
 
 	@Override

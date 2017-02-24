@@ -38,7 +38,6 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage background = null;
 	private BufferedImage background1 = null;
 	private BufferedImage mainPlayer = null;
-	private BufferedImage players = null;
 
 	private boolean is_shooting = false;
 
@@ -77,7 +76,7 @@ public class Game extends Canvas implements Runnable {
 	public static int HEALTH = 100 * 2;
 
 	public static enum STATE {
-		MENU, GAME, HELP
+		MENU, GAME, HELP, GAMEOVER, RESTART
 	};
 
 	public static STATE State = STATE.MENU;
@@ -108,16 +107,12 @@ public class Game extends Canvas implements Runnable {
 
 		sound = new Sound();
 		c.createEnemy(enemy_count);
-		sound.stopGame(); // vhgm
 		try {
-			sound.playMenu();
+			sound.playGame();
 		} catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} // vhgm
+		}
 
 	}
 
@@ -145,12 +140,6 @@ public class Game extends Canvas implements Runnable {
 
 	public void run() {
 		init();
-		try {
-			sound.playGame();
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		long lastTime = System.nanoTime();
 		final double amountOfTicks = 60.0; // was 60.0 . higher means faster
 											// game-play
@@ -283,11 +272,35 @@ public class Game extends Canvas implements Runnable {
 			g.drawString("Go Back", backButton.x + 19, backButton.y + 30);
 			g2d.draw(backButton);
 
+		} else if (State == STATE.GAMEOVER)
+		{
+			Rectangle restartGame = new Rectangle(Game.WIDTH / 2 + 120, 250, 100, 50);
+			Rectangle continueGame = new Rectangle(Game.WIDTH / 2 + 120, 150, 100, 50);
+			
+			Graphics2D g2d = (Graphics2D) g;
+			Font fnt0 = new Font("arial", Font.BOLD, 59);
+			g.setFont(fnt0);
+			g.setColor(Color.white);
+			g.drawString("GAME OVER", Game.WIDTH / 2, 100);
+
+			Font fnt1 = new Font("arial", Font.BOLD, 15);
+			g.setFont(fnt1);
+			g.drawString("Restart...", restartGame.x + 19, restartGame.y + 30);
+			g2d.draw(restartGame);
+			g.drawString("Continue", continueGame.x + 19, continueGame.y + 30);
+			g2d.draw(continueGame);
+		
 		}
 		if (HEALTH <= 0) {
-			State = STATE.MENU;
-			// sound.playGame();
+			State =STATE.GAMEOVER;
+			HEALTH = 200;
+		}
+
+		if (State == STATE.RESTART)
+		{
 			sound.stopGame();
+			init(); // to start a new game after game over
+			State = STATE.MENU;
 			HEALTH = 200;
 			score = 0; // to reset score after game over
 			level = 1;
@@ -295,8 +308,6 @@ public class Game extends Canvas implements Runnable {
 			enemy_killed = 0; // to reset enemy killed after game over
 			ea.removeAll(ea); // see if this works
 			eb.removeAll(eb); // see if this works
-			init(); // to start a new game after game over
-			sound.stopGame();
 		}
 
 		g.dispose();
@@ -308,15 +319,15 @@ public class Game extends Canvas implements Runnable {
 
 		if (State == STATE.GAME) {
 			if (key == KeyEvent.VK_RIGHT) {
-				p.setVelX(5);
+				p.setVelX(4+level*0.5);
 			} else if (key == KeyEvent.VK_LEFT) {
-				p.setVelX(-5);
+				p.setVelX(-4-level*0.5);
 
 			} else if (key == KeyEvent.VK_DOWN) {
-				p.setVelY(5);
+				p.setVelY(4+level*0.5);
 
 			} else if (key == KeyEvent.VK_UP) {
-				p.setVelY(-5);
+				p.setVelY(-4-level*0.5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
 				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
 				sound.playGunSound();

@@ -9,7 +9,7 @@ public class Physics {
 	public static boolean Collision(EntityA enta, EntityB entb) {
 
 		if (enta.getBounds().intersects(entb.getBounds())) {
-			// sound.playExplosion();
+			//sound.playExplosion();
 			return true;
 		}
 		return false;
