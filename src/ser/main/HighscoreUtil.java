@@ -25,7 +25,6 @@ public class HighscoreUtil {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			score = bufferedReader.readLine();
-			System.out.println(score);
 			bufferedReader.close();
 		} catch (FileNotFoundException ex) {
 			System.out.println("Unable to open file");
@@ -43,7 +42,6 @@ public class HighscoreUtil {
 		}
 		try {
 			if (file.exists() == false) {
-				System.out.println("We had to make a new file.");
 				file.createNewFile();
 			}
 			PrintWriter out = new PrintWriter(file);
