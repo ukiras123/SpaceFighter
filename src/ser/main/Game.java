@@ -76,7 +76,7 @@ public class Game extends Canvas implements Runnable {
 			spriteSheet = loader.loadImage("/sheet1.png");
 			background = loader.loadImage("/starbg.png");		//Menu + Game background
 			background1 = loader.loadImage("/starbg1.png");	// Game background
-			mainPlayer = loader.loadImage("/space.gif");
+			mainPlayer = loader.loadImage("/mainPlayer.png");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
