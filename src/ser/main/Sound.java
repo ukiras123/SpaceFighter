@@ -17,13 +17,13 @@ public class Sound {
 	private AudioClip gun, boom;
 
 	private Clip gameClip;
-	private AudioInputStream game; // for Game we have to do this way so that we
-									// can use loop for music
+	private AudioInputStream game; // for Game Music we have to do this way so that we
+									// can use loop for music.
 
-	public static boolean gamePlaying;
+	public static boolean gameMysicPlaying;
 
 	public Sound() {
-		gamePlaying = false;
+		gameMysicPlaying = false;
 		url1 = Sound.class.getResource("/laserSound.wav");
 		url2 = Sound.class.getResource("/boom.wav");
 		url3 = Sound.class.getResource("/adventure.wav");
@@ -38,6 +38,21 @@ public class Sound {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			gameClip = AudioSystem.getClip();
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			gameClip.open(game);
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void playGunSound() {
@@ -58,24 +73,16 @@ public class Sound {
 	}
 
 	public void playGameMusic() throws LineUnavailableException {
-		if (gamePlaying == false) { // Validation check
-			gameClip = AudioSystem.getClip();
-			try {
-				gameClip.open(game);
-			} catch (LineUnavailableException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			gameClip.start();
+		if (gameMysicPlaying == false) { // Validation check
+			//gameClip.start();
 			gameClip.loop(Clip.LOOP_CONTINUOUSLY);
-			gamePlaying = true;
+			gameMysicPlaying = true;
 		}
 	}
 
 	public void stopGameMusic() {
 		gameClip.stop();
-		gamePlaying = false;
+		gameMysicPlaying = false;
 	}
 
 }

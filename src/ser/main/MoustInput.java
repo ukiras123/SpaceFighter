@@ -3,8 +3,16 @@ package ser.main;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.sound.sampled.LineUnavailableException;
+
 //Mouse listener
 public class MoustInput implements MouseListener {
+
+	public Sound sound;
+
+	public MoustInput(Sound sound) {
+		this.sound = sound;
+	}
 
 	public void mousePressed(MouseEvent e) {
 
@@ -31,6 +39,22 @@ public class MoustInput implements MouseListener {
 					System.exit(1);
 				}
 			}
+
+			// Mute Button
+			if (mx >= Game.WIDTH / 4 && mx <= Game.WIDTH / 4 + 50) {
+				if (my >= 350 && my <= 400) {
+					if (Sound.gameMysicPlaying == true) {
+						sound.stopGameMusic();
+					} else {
+						try {
+							sound.playGameMusic();
+						} catch (LineUnavailableException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
 		}
 
 		// Help Page
@@ -42,7 +66,7 @@ public class MoustInput implements MouseListener {
 				}
 			}
 		}
-		
+
 		// Game Over Page
 		if (Game.State == Game.STATE.GAMEOVER) {
 			// Continue Button
@@ -59,7 +83,7 @@ public class MoustInput implements MouseListener {
 			}
 
 		}
-		
+
 	}
 
 	@Override

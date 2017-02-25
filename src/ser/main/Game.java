@@ -35,7 +35,6 @@ public class Game extends Canvas implements Runnable {
 	private int enemy_killed = 0;	//default enemy killed
 	private static int level = 1;		// Beginning level of the game
 	public static int HEALTH = 200;		// initial health with 200 width
-	private int oldHighScore;			// value from file, for the comparison of high score to player score.
 	public static STATE State = STATE.MENU; // default state at the beginning of game
 
 	
@@ -47,9 +46,9 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage mainPlayer = null;
 
 	private boolean running = false;  //just to check if game is running
-	private boolean is_shooting = false;		//userful for sound purpose
+	private boolean is_shooting = false;		//useful for sound purpose
 
-	private static Sound sound;
+	private Sound sound;
 	private HighScoreUtil highScore;	// to access highScore file.
 	private Player p;
 	private Controller c;
@@ -65,19 +64,12 @@ public class Game extends Canvas implements Runnable {
 		MENU, GAME, HELP, GAMEOVER, RESTART			
 	};
 
-
+	
 	//instantiating all required objects and variables.
 	public void init() {
 		requestFocus();  //needed to focus JFrame, ActionListenor might not work sometimes without it.
 		highScore = new HighScoreUtil();
-		
-		try {
-			oldHighScore = highScore.getScore();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+		sound = new Sound();
 		//Loading up all the animation pic
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
@@ -89,28 +81,31 @@ public class Game extends Canvas implements Runnable {
 			e.printStackTrace();
 		}
 
+
 		//Initiating these two to listen mouse and keyboard input
 		addKeyListener(new KeyInput(this));
-		this.addMouseListener(new MoustInput());
-
+		addMouseListener(new MoustInput(sound));
+		
 		tex = new Texture(this);
 		c = new Controller(tex, this);
 		p = new Player(WIDTH, HEIGHT * 2, tex, this, c);
 		menu = new Menu();
-		sound = new Sound();
+		
 
 		ea = c.getEntityA();		//Bullets
 		eb = c.getEntityB();		//Enemies: enemy + asteroid
 
 		c.createEnemy(enemy_count); //Creating new enemies to start the game
 		
+		if (Sound.gameMysicPlaying != true )
+		{
 		try {
 			sound.playGameMusic();	//Start game music
 		} catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		}
 	}
 
 	private synchronized void start() {
@@ -146,7 +141,7 @@ public class Game extends Canvas implements Runnable {
 		long timer = System.currentTimeMillis();
 		
 		//Controlling the FPS in game across all device
-		//Main game loop, tick(), render()
+		//Main game loop: tick() & render()
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -197,6 +192,8 @@ public class Game extends Canvas implements Runnable {
 		
 		//Every time all the enemies are killed in one level, more enemies are created
 		if (enemy_killed >= enemy_count) {
+			ea.clear(); // clearing all bullets from the list
+			eb.clear(); // clearing all enemy group from the list
 			enemy_count += 2;	//enemy added for new level
 			enemy_killed = 0;	//reseting enemy_killed back to 0 for that level
 			level++;		//each cycle will result new level
@@ -320,21 +317,26 @@ public class Game extends Canvas implements Runnable {
 		if (HEALTH <= 0) {
 			State = STATE.GAMEOVER;
 			HEALTH = 200;
-			if (oldHighScore < score) {
-				highScore.setScore(score);		//Always save the user score after he dies in the game
+			p.setVelX(0);		// Rest Player spped back to 0
+			p.setVelY(0);
+			try {
+				if (highScore.getScore() < score) {
+					highScore.setScore(score);		//Always save the user score after he dies in the game
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 
 		//In case a player chose to restart the game from the beginning we setting everything default
 		if (State == STATE.RESTART) {
-			sound.stopGameMusic();
 			score = 0; // to reset score after game over
 			level = 1;	// default level
 			enemy_count = 8; // to reset enemy count after game over
 			enemy_killed = 0; // to reset enemy killed after game over
-			ea.removeAll(ea); // clearing all bullets from the list
-			eb.removeAll(eb); // clearing all enemy group from the list
-			init(); // initializing all necessary variables/objects
+			ea.clear(); // clearing all bullets from the list
+			eb.clear(); // clearing all enemy group from the list
+			c.createEnemy(enemy_count); //Creating new enemies to start the game
 			State = STATE.MENU;
 			HEALTH = 200;	// Default health
 		}
