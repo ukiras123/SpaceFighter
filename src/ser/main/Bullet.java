@@ -32,10 +32,14 @@ public class Bullet extends GameObject implements EntityA {
 	public void render(Graphics g) {
 		if (level >= 1 && level <= 3) {
 			g.drawImage(tex.missile[0], (int) x, (int) y, null);
-		} else if (level > 3 && level <= 6) {
+		} else if (level > 3 && level <= 5) {
 			g.drawImage(tex.missile[1], (int) x, (int) y, null);
-		} else {
+		} else if (level > 5 && level <= 7) {
 			g.drawImage(tex.missile[2], (int) x, (int) y, null);
+		} else if (level > 7 && level <= 9){
+			g.drawImage(tex.missile[3], (int) x, (int) y, null);
+		}else{
+			g.drawImage(tex.missile[4], (int) x, (int) y, null);
 		}
 	}
 

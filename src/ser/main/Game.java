@@ -73,9 +73,9 @@ public class Game extends Canvas implements Runnable {
 		//Loading up all the animation pic
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
-			spriteSheet = loader.loadImage("/sheet.png");
-			background = loader.loadImage("/starbg.png");
-			background1 = loader.loadImage("/starbg.png");
+			spriteSheet = loader.loadImage("/sheet1.png");
+			background = loader.loadImage("/starbg.png");		//Menu + Game background
+			background1 = loader.loadImage("/starbg1.png");	// Game background
 			mainPlayer = loader.loadImage("/space.gif");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -221,8 +221,17 @@ public class Game extends Canvas implements Runnable {
 		//Animations during game time
 		if (State == STATE.GAME) {
 			//We are literally cycling two images so we can give that feel of flying as in menu
-			g.drawImage(background1, 30, ybg, null);
-			g.drawImage(background1, 30, ybg2, null);
+			//changing background image after level 10
+			if(level < 10)
+			{
+			g.drawImage(background, 0, ybg, null);
+			g.drawImage(background, 0, ybg2, null);
+			}
+			else
+			{
+			g.drawImage(background1, 0, ybg, null);
+			g.drawImage(background1, 0, ybg2, null);
+			}
 			p.render(g);
 			c.render(g);
 
