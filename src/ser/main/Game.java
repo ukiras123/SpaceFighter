@@ -468,8 +468,5 @@ public class Game extends Canvas implements Runnable {
 	{
 		return sound;
 	}
-
-
-
 	
 }
