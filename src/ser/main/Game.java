@@ -21,9 +21,7 @@ import ser.main.interfaces.EntityB;
 
 public class Game extends Canvas implements Runnable {
 
-	/**
-	 * 
-	 */
+
 	//JFrame Dimension
 	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 320;				
