@@ -371,11 +371,11 @@ public class Game extends Canvas implements Runnable {
 			} 
 			
 			else if (key == KeyEvent.VK_SPACE && !is_shooting) {
-				if (level >=1 && level <= 3)
+				if (level >=1 && level <= 9)
 				{
 				c.addEntity(new Bullet1(p.getX(), p.getY(), tex, this));	//Creating bullet for each space
 				}
-				else if (level > 3 && level <= 8)
+				else if (level > 9 && level <= 15)
 				{
 				c.addEntity(new Bullet2(p.getX(), p.getY(), tex, this));	//Creating bullet for each space
 				c.addEntity(new Bullet3(p.getX(), p.getY(), tex, this));	//Creating bullet for each space
