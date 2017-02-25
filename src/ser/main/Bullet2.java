@@ -5,12 +5,12 @@ import java.awt.Rectangle;
 
 import ser.main.interfaces.EntityA;
 
-public class Bullet extends GameObject implements EntityA {
+public class Bullet2 extends GameObject implements EntityA {
 
 	private Texture tex;
 	private int level;
 
-	public Bullet(double x, double y, Texture tex, Game game) {
+	public Bullet2(double x, double y, Texture tex, Game game) {
 		super(x, y);
 		this.tex = tex;
 		level = game.getLevel();
@@ -21,10 +21,13 @@ public class Bullet extends GameObject implements EntityA {
 	public void tick() {
 		if (level >= 1 && level <= 3) {
 			y -= 6;
+			x += 1.5;
 		} else if (level > 3 && level <= 6) {
 			y -= 9;
+			x += 1.5;
 		} else {
 			y -= 12;
+			x += 1.5;
 		}
 	}
 
