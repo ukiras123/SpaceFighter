@@ -18,19 +18,22 @@ public class Player extends GameObject implements EntityA {
 	Controller controller;
 	Random rand = new Random();
 	int randomPlayer;
-
+	
 	public Player(double x, double y, Texture tex, Game game, Controller controller) {
 		super(x, y);
 		this.tex = tex;
 		this.game = game;
 		this.controller = controller;
 		randomPlayer = rand.nextInt(5);
+		Physics.sound = game.getSound();	// passing same sound object from game
 	}
 
+	// updating variables
 	public void tick() {
 		x += velX;
 		y += velY;
-
+		
+		//Controlling player movement just inside the frame
 		if (x <= 0)
 			x = 0;
 		if (x >= 640 - 32)
@@ -41,10 +44,10 @@ public class Player extends GameObject implements EntityA {
 			y = 480 - 40;
 
 		for (int i = 0; i < game.eb.size(); i++) {
-			EntityB tempEnt = game.eb.get(i);
-
-			if (Physics.Collision(this, tempEnt)) {
-				controller.removeEntity(tempEnt);
+			EntityB enemyGroup = game.eb.get(i);
+			//Detecting if player collides with and enemy group (asteroid or enemy)
+			if (Physics.Collision(this, enemyGroup)) {
+				controller.removeEntity(enemyGroup);
 				Game.HEALTH -= 20;
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
 			}
@@ -52,6 +55,7 @@ public class Player extends GameObject implements EntityA {
 		}
 	}
 
+	//Random player each game
 	public void render(Graphics g) {
 		if (randomPlayer == 4) {
 			g.drawImage(tex.mainPlayer, (int) x, (int) y, null);

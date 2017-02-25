@@ -17,7 +17,7 @@ public class Enemy extends GameObject implements EntityB {
 	private int level;
 	private int speed = r.nextInt(3) + 4 / 3;
 	private Player p;
-
+	
 	public Enemy(double x, double y, Texture tex, Controller c, Game game) {
 		super(x, y);
 		this.tex = tex;
@@ -25,31 +25,33 @@ public class Enemy extends GameObject implements EntityB {
 		this.game = game;
 		p = game.getPlayer();
 		level = game.getLevel();
+		Physics.sound = game.getSound();	// passing same sound object from game
 	}
 
+	// updating variables, speed of enemy depends on level
 	public void tick() {
 		y += speed + (game.getLevel() / 2);
-		setX(p.getX());
+		setX(p.getX());	// basic AI logic
 
+		//in case enemy goes out of frame, again getting it back to the top
 		if (y > Game.HEIGHT * Game.SCALE) {
 			x = p.getX();
 			y = -5;
 		}
 
 		for (int i = 0; i < game.ea.size(); i++) {
-			EntityA tempEnt = game.ea.get(i);
-
-			if (Physics.Collision(this, tempEnt)) {
-				c.removeEntity(tempEnt);
+			EntityA playerGroup = game.ea.get(i);
+			//Detecting if enemy collides with and player group (bullet or player)
+			if (Physics.Collision(this, playerGroup)) {
+				c.removeEntity(playerGroup);
 				c.removeEntity(this);
-				game.setScore(); // adding score
+				game.updateScore(); // adding score in case enemy is killed
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
-
 			}
 		}
-
 	}
 
+	//Different enemies with different levels
 	public void render(Graphics g) {
 		if (level >= 1 && level <= 3) {
 			g.drawImage(tex.enemy[0], (int) x, (int) y, null);
@@ -79,14 +81,13 @@ public class Enemy extends GameObject implements EntityB {
 		return x;
 	}
 
+	//AI piece of the code, enemy will follow player
 	public void setX(double x) {
 		if (x < this.x) {
 			this.x -= 0.5;
 		} else {
 			this.x += 0.5;
-
 		}
-
 	}
 
 }

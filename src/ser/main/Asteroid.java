@@ -10,7 +10,7 @@ import ser.main.interfaces.EntityB;
 public class Asteroid extends GameObject implements EntityB {
 
 	private Texture tex;
-	Random r = new Random();
+	Random r = new Random();	//to randomize speed and coordinates
 
 	private Game game;
 	private Controller c;
@@ -22,21 +22,25 @@ public class Asteroid extends GameObject implements EntityB {
 		this.tex = tex;
 		this.c = c;
 		this.game = game;
+		Physics.sound = game.getSound();	// passing same sound object from game
 	}
 
+	//updating all variables, speed depends on game Level
 	public void tick() {
 		y += speed + (game.getLevel() / 3.5);
-
+		
+		//After an asteroid goes out of frame, getting it back to top
 		if (y > Game.HEIGHT * Game.SCALE) {
 			x = r.nextInt(640);
 			y = -3;
 		}
 
+		//in case of collision occurred removing entity
 		for (int i = 0; i < game.ea.size(); i++) {
-			EntityA tempEnt = game.ea.get(i);
-
-			if (Physics.Collision(this, tempEnt)) {
-				c.removeEntity(tempEnt);
+			EntityA playerGroup = game.ea.get(i);
+			//Detecting if enemy collides with and player group (bullet or player)
+			if (Physics.Collision(this, playerGroup)) {
+				c.removeEntity(playerGroup);
 				c.removeEntity(this);
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
 

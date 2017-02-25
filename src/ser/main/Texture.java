@@ -16,10 +16,10 @@ public class Texture {
 	public Texture(Game game) {
 		ss = new SpriteSheet(game.getSpriteSheet());
 		this.game = game;
-
 		getTextures();
 	}
 
+	//creating arrays for pictures from spites
 	private void getTextures() {
 		missile[0] = ss.grabImage(2, 1, 32, 32);
 		missile[1] = ss.grabImage(2, 2, 32, 32);

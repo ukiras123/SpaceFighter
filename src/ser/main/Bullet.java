@@ -16,6 +16,8 @@ public class Bullet extends GameObject implements EntityA {
 		level = game.getLevel();
 	}
 
+	// updating all variables
+	// speed of bulled increases with level
 	public void tick() {
 		if (level >= 1 && level <= 3) {
 			y -= 6;
@@ -26,6 +28,7 @@ public class Bullet extends GameObject implements EntityA {
 		}
 	}
 
+	// controlling bullet pic and level
 	public void render(Graphics g) {
 		if (level >= 1 && level <= 3) {
 			g.drawImage(tex.missile[0], (int) x, (int) y, null);

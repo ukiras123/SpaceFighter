@@ -24,66 +24,51 @@ public class Game extends Canvas implements Runnable {
 	/**
 	 * 
 	 */
+	//JFrame Dimension
 	private static final long serialVersionUID = 1L;
-	public static final int WIDTH = 320;
+	public static final int WIDTH = 320;				
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 2;
 	public final String TITLE = "Space Fighter";
 
-	private boolean running = false;
+	private boolean running = false;  //just to check if game is running
 	private Thread thread;
-	private static int totalContinue = 3;
+	private static int totalContinue = 3; //total number of user continuation
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet = null;
 	private BufferedImage background = null;
 	private BufferedImage background1 = null;
 	private BufferedImage mainPlayer = null;
 
-	private boolean is_shooting = false;
-
-	private int score = 0; // new variable to set score
-	private int enemy_count = 8;
+	private boolean is_shooting = false;		//userful for sound purpose
+	private int score = 0; 			// default score
+	private int enemy_count = 8;	// default enemy
 	private int enemy_killed = 0;
 	private static Sound sound;
-	private HighscoreUtil highScore;
-	private static int level = 1;
-
-	public void setScore() {
-		this.score += 1;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public int getEnemt_killed() {
-		return enemy_killed;
-	}
-
-	public void setEnemt_killed(int enemy_killed) {
-		this.enemy_killed = enemy_killed;
-		this.enemy_killed += score;
-	}
+	private HighscoreUtil highScore;	// to access highScore file.
+	private static int level = 1;		// Beginning level of the game
 
 	private Player p;
 	private Controller c;
 	private Texture tex;
 	private Menu menu;
 
-	public LinkedList<EntityA> ea;
-	public LinkedList<EntityB> eb;
+	public LinkedList<EntityA> ea; //Player entity
+	public LinkedList<EntityB> eb; //Enemy entity
 
-	public static int HEALTH = 100 * 2;
-	private int oldHighScore;
+	public static int HEALTH = 200;		// initial health with 200 width
+	private int oldHighScore;			// for the comparison of high score to player score.
 
+	//Creating state for each different STATES in game
 	public static enum STATE {
-		MENU, GAME, HELP, GAMEOVER, RESTART
+		MENU, GAME, HELP, GAMEOVER, RESTART			
 	};
 
-	public static STATE State = STATE.MENU;
+	public static STATE State = STATE.MENU; // default state at the beginning of game
 
+	//instantiating all required objects and variables.
 	public void init() {
-		requestFocus();
+		requestFocus();  //needed to focus JFrame, ActionListenor might not work sometimes without it.
 		highScore = new HighscoreUtil();
 		try {
 			oldHighScore = highScore.getScore();
@@ -91,7 +76,8 @@ public class Game extends Canvas implements Runnable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		
+		//Loading up all the animation pic
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try {
 			spriteSheet = loader.loadImage("/sheet.png");
@@ -102,6 +88,7 @@ public class Game extends Canvas implements Runnable {
 			e.printStackTrace();
 		}
 
+		//Initiating these two to listen mouse and keyboard input
 		addKeyListener(new KeyInput(this));
 		this.addMouseListener(new MoustInput());
 
@@ -110,12 +97,13 @@ public class Game extends Canvas implements Runnable {
 		c = new Controller(tex, this);
 		p = new Player(WIDTH, HEIGHT * 2, tex, this, c);
 		menu = new Menu();
-
+		
+		//Basically we have two Entity: EntityA -> Player Side, EntityB -> Enemy Side
 		ea = c.getEntityA();
 		eb = c.getEntityB();
 
 		sound = new Sound();
-		c.createEnemy(enemy_count);
+		c.createEnemy(enemy_count); //Creating new enemies
 		try {
 			sound.playGame();
 		} catch (LineUnavailableException e) {
@@ -126,11 +114,11 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private synchronized void start() {
-		if (running)
+		if (running)		//Just for safety
 			return;
 
 		running = true;
-		thread = new Thread(this);
+		thread = new Thread(this);		//Starting new thread
 		thread.start();
 	}
 
@@ -150,13 +138,13 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		init();
 		long lastTime = System.nanoTime();
-		final double amountOfTicks = 60.0; // was 60.0 . higher means faster
-											// game-play
+		final double amountOfTicks = 60.0; // will be used to set the speed of the game, high = more speed
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		int updates = 0;
 		int frames = 0;
 		long timer = System.currentTimeMillis();
+		//Controlling the FPS in game across all device
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -175,17 +163,18 @@ public class Game extends Canvas implements Runnable {
 				updates = 0;
 				frames = 0;
 			}
-
 		}
 		stop();
 	}
 
+	//Created these two variable to move background image in cycle
 	int ybg = 0;
 	int ybg2 = -((HEIGHT * 2));
 
-	// everything that updates
+	// Updating all the variables here
 	private void tick() {
 
+		//For background Image animation
 		if (ybg2 <= 0) {
 			ybg2 += 1;
 		} else {
@@ -202,21 +191,23 @@ public class Game extends Canvas implements Runnable {
 			p.tick();
 			c.tick();
 		}
+		
+		//Every time all the enemies are killed in one level, more enemies are created
 		if (enemy_killed >= enemy_count) {
 			enemy_count += 2;
-			enemy_killed = 0;
+			enemy_killed = 0;	//So that we can compare above if condition
 			level++;
 			c.createEnemy(enemy_count);
 		}
 
 	}
 
-	// everything that renders
+	// All Graphical activities here
 	private void render() {
+		
 		BufferStrategy bs = this.getBufferStrategy();
-
 		if (bs == null) {
-			createBufferStrategy(3);
+			createBufferStrategy(3);		// We are rendering images in 3 Frames
 			return;
 		}
 
@@ -227,7 +218,9 @@ public class Game extends Canvas implements Runnable {
 		g.drawImage(background, 30, ybg, null);
 		g.drawImage(background, 30, ybg2, null);
 
+		//animations during game time
 		if (State == STATE.GAME) {
+			//We are literally rotating two images so we can give that feel of flying
 			g.drawImage(background1, 30, ybg, null);
 			g.drawImage(background1, 30, ybg2, null);
 			p.render(g);
@@ -311,38 +304,41 @@ public class Game extends Canvas implements Runnable {
 			}
 
 		}
+		
+		// In case a player dies in the game
 		if (HEALTH <= 0) {
 			State = STATE.GAMEOVER;
 			HEALTH = 200;
 			if (oldHighScore < score) {
-				highScore.setScore(score);
+				highScore.setScore(score);		//Always saving the user score after he dies in the game
 			}
 		}
 
+		//In case a player chose to restart the game from the beginning we setting everything default
 		if (State == STATE.RESTART) {
 			sound.stopGame();
 			score = 0; // to reset score after game over
 			level = 1;
 			enemy_count = 8; // to reset enemy count after game over
 			enemy_killed = 0; // to reset enemy killed after game over
-			ea.removeAll(ea); // see if this works
-			eb.removeAll(eb); // see if this works
-			init(); // to start a new game after game over
+			ea.removeAll(ea); // clearing all player group
+			eb.removeAll(eb); // clearing all enemy group
+			init(); // initializing all necessary variables/objects
 			State = STATE.MENU;
 			HEALTH = 200;
 
 		}
-
 		g.dispose();
 		bs.show();
 	}
 
+	//Keyboard functionality
 	public void keyPressed(KeyEvent e) throws LineUnavailableException, IOException {
 		int key = e.getKeyCode();
-
+		//Speed of player changes with level
 		if (State == STATE.GAME) {
 			if (key == KeyEvent.VK_RIGHT) {
-				p.setVelX(4 + level * 0.5);
+				p.setVelX(4 + level * 0.5);	
 			} else if (key == KeyEvent.VK_LEFT) {
 				p.setVelX(-4 - level * 0.5);
 
@@ -353,13 +349,13 @@ public class Game extends Canvas implements Runnable {
 				p.setVelY(-4 - level * 0.5);
 			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
 				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
-				sound.playGunSound();
+				sound.playGunSound();			//Every space will produce gun sound
 				is_shooting = true;
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				State = STATE.MENU;
 			}
 		} else if (State == STATE.MENU) {
-			if (key == KeyEvent.VK_ESCAPE) {
+			if (key == KeyEvent.VK_ESCAPE) {		//Escape will work as pause/start, nothing gets reset
 				State = STATE.GAME;
 			}
 		}
@@ -386,7 +382,9 @@ public class Game extends Canvas implements Runnable {
 		}
 
 	}
-
+	
+	//Main starting point of the game
+	//Creating new JFrame with pre-created dimension
 	public static void main(String[] args) {
 		Game game = new Game();
 
@@ -445,4 +443,21 @@ public class Game extends Canvas implements Runnable {
 	public static void setTotalContinue(int totalContinue) {
 		Game.totalContinue = totalContinue;
 	}
+	
+	public void updateScore() {		//updating score for enemy killed 
+		this.score += 1;
+	}
+
+	public int getScore() {
+		return score;
+	}
+	
+	public Sound getSound()
+	{
+		return sound;
+	}
+
+
+
+	
 }

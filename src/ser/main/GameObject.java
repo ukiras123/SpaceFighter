@@ -2,6 +2,7 @@ package ser.main;
 
 import java.awt.Rectangle;
 
+//This class will help to wrap each entities in a rectangle, so we can check for collision
 public class GameObject {
 
 	public double x, y;

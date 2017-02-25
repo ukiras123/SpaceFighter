@@ -6,33 +6,34 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class HighscoreUtil {
-	String path = System.getProperty("user.home");
 
+	// Path to create highScoreLog file
+	String path = System.getProperty("user.home") + "/Documents";
+
+	// Setting player score in the file
 	public void setScore(int score) {
 		try {
-			PrintWriter writer = new PrintWriter(path + "/output1.txt", "UTF-8");
+			PrintWriter writer = new PrintWriter(path + "/highScoreLog.txt", "UTF-8");
 			writer.println(score);
 			writer.close();
 		} catch (IOException e) {
 		}
 	}
 
+	// Getting the score from the file
 	public int getScore() throws IOException {
 		String line = null;
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader(path + "/output1.txt"));
+			br = new BufferedReader(new FileReader(path + "/highScoreLog.txt"));
 		} catch (IOException e) {
-			PrintWriter writer = new PrintWriter(path + "/output1.txt", "UTF-8");
+			PrintWriter writer = new PrintWriter(path + "/highScoreLog.txt", "UTF-8");
 			writer.println(0);
 			writer.close();
-			br = new BufferedReader(new FileReader(path + "/output1.txt"));
+			br = new BufferedReader(new FileReader(path + "/highScoreLog.txt"));
 		}
-		try {
-			line = br.readLine();
-		} finally {
-			br.close();
-		}
+		line = br.readLine();
+		br.close();
 		return Integer.valueOf(line);
 	}
 

@@ -7,13 +7,14 @@ import java.util.Random;
 import ser.main.interfaces.EntityA;
 import ser.main.interfaces.EntityB;
 
+//Main controller to create/remove entities, implemented as linkedList
 public class Controller {
 
 	private LinkedList<EntityA> ea = new LinkedList<EntityA>();
 	private LinkedList<EntityB> eb = new LinkedList<EntityB>();
 
-	EntityA enta;
-	EntityB entb;
+	EntityA enta; // For Player, bullet
+	EntityB entb; // For enemy, asteroid
 
 	private Texture tex;
 	Random r = new Random();
@@ -33,13 +34,13 @@ public class Controller {
 
 	public void tick() {
 
-		// A Class
+		// Player group i.e bullet and player
 		for (int i = 0; i < ea.size(); i++) {
 			enta = ea.get(i);
 			enta.tick();
 		}
 
-		// B Class
+		// Enemy group i.e enemy and asteroid
 		for (int i = 0; i < eb.size(); i++) {
 			entb = eb.get(i);
 			entb.tick();
@@ -49,16 +50,15 @@ public class Controller {
 
 	public void render(Graphics g) {
 
-		// A Class
+		// Player group i.e bullet and player
 		for (int i = 0; i < ea.size(); i++) {
 			enta = ea.get(i);
-
 			enta.render(g);
 		}
-		// B Class
+		
+		// Enemy group i.e enemy and asteroid
 		for (int i = 0; i < eb.size(); i++) {
 			entb = eb.get(i);
-
 			entb.render(g);
 		}
 

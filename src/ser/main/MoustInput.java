@@ -3,6 +3,7 @@ package ser.main;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+//Mouse listener
 public class MoustInput implements MouseListener {
 
 	public void mousePressed(MouseEvent e) {
