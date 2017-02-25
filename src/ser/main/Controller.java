@@ -10,14 +10,14 @@ import ser.main.interfaces.EntityB;
 //Main controller to create/remove entities, implemented as linkedList
 public class Controller {
 
-	private LinkedList<EntityA> ea = new LinkedList<EntityA>();
-	private LinkedList<EntityB> eb = new LinkedList<EntityB>();
+	private LinkedList<EntityA> ea = new LinkedList<EntityA>();	//Bullet
+	private LinkedList<EntityB> eb = new LinkedList<EntityB>();	//Enemy (enemy + asteroid)
 
-	EntityA enta; // For Player, bullet
+	EntityA enta; // For bullet
 	EntityB entb; // For enemy, asteroid
 
+	private Random r = new Random();
 	private Texture tex;
-	Random r = new Random();
 	private Game game;
 
 	public Controller(Texture tex, Game game) {
@@ -27,14 +27,14 @@ public class Controller {
 
 	public void createEnemy(int enemy_count) {
 		for (int i = 0; i < enemy_count / 2; i++) {
-			addEntity(new Enemy(r.nextInt(640), -10, tex, this, game));
-			addEntity(new Asteroid(r.nextInt(640), -10, tex, this, game));
-		}
+			addEntity(new Enemy(r.nextInt(640), -10, tex, this, game));	//enemy entity
+			addEntity(new Asteroid(r.nextInt(640), -10, tex, this, game));	//asteroid entity
+		}	
 	}
 
 	public void tick() {
 
-		// Player group i.e bullet and player
+		// bullet entities
 		for (int i = 0; i < ea.size(); i++) {
 			enta = ea.get(i);
 			enta.tick();
@@ -50,7 +50,7 @@ public class Controller {
 
 	public void render(Graphics g) {
 
-		// Player group i.e bullet and player
+		// bullet entities
 		for (int i = 0; i < ea.size(); i++) {
 			enta = ea.get(i);
 			enta.render(g);

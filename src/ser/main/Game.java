@@ -22,52 +22,55 @@ import ser.main.interfaces.EntityB;
 public class Game extends Canvas implements Runnable {
 
 
-	//JFrame Dimension
+	//JFrame dimension variables
 	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 320;				
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 2;
 	public final String TITLE = "Space Fighter";
 
-	private boolean running = false;  //just to check if game is running
-	private Thread thread;
 	private static int totalContinue = 3; //total number of user continuation
+	private int score = 0; 			// default score
+	private int enemy_count = 8;	// default enemy
+	private int enemy_killed = 0;	//default enemy killed
+	private static int level = 1;		// Beginning level of the game
+	public static int HEALTH = 200;		// initial health with 200 width
+	private int oldHighScore;			// value from file, for the comparison of high score to player score.
+	public static STATE State = STATE.MENU; // default state at the beginning of game
+
+	
+	private Thread thread;
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet = null;
 	private BufferedImage background = null;
 	private BufferedImage background1 = null;
 	private BufferedImage mainPlayer = null;
 
+	private boolean running = false;  //just to check if game is running
 	private boolean is_shooting = false;		//userful for sound purpose
-	private int score = 0; 			// default score
-	private int enemy_count = 8;	// default enemy
-	private int enemy_killed = 0;
-	private static Sound sound;
-	private HighscoreUtil highScore;	// to access highScore file.
-	private static int level = 1;		// Beginning level of the game
 
+	private static Sound sound;
+	private HighScoreUtil highScore;	// to access highScore file.
 	private Player p;
 	private Controller c;
 	private Texture tex;
 	private Menu menu;
 
-	public LinkedList<EntityA> ea; //Player entity
+	public LinkedList<EntityA> ea; //Player entity 
 	public LinkedList<EntityB> eb; //Enemy entity
 
-	public static int HEALTH = 200;		// initial health with 200 width
-	private int oldHighScore;			// for the comparison of high score to player score.
 
 	//Creating state for each different STATES in game
 	public static enum STATE {
 		MENU, GAME, HELP, GAMEOVER, RESTART			
 	};
 
-	public static STATE State = STATE.MENU; // default state at the beginning of game
 
 	//instantiating all required objects and variables.
 	public void init() {
 		requestFocus();  //needed to focus JFrame, ActionListenor might not work sometimes without it.
-		highScore = new HighscoreUtil();
+		highScore = new HighScoreUtil();
+		
 		try {
 			oldHighScore = highScore.getScore();
 		} catch (IOException e1) {
@@ -91,19 +94,18 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseListener(new MoustInput());
 
 		tex = new Texture(this);
-
 		c = new Controller(tex, this);
 		p = new Player(WIDTH, HEIGHT * 2, tex, this, c);
 		menu = new Menu();
-		
-		//Basically we have two Entity: EntityA -> Player Side, EntityB -> Enemy Side
-		ea = c.getEntityA();
-		eb = c.getEntityB();
-
 		sound = new Sound();
-		c.createEnemy(enemy_count); //Creating new enemies
+
+		ea = c.getEntityA();		//Bullets
+		eb = c.getEntityB();		//Enemies: enemy + asteroid
+
+		c.createEnemy(enemy_count); //Creating new enemies to start the game
+		
 		try {
-			sound.playGame();
+			sound.playGameMusic();	//Start game music
 		} catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,11 +114,11 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private synchronized void start() {
-		if (running)		//Just for safety
+		if (running)		//For safety check
 			return;
 
 		running = true;
-		thread = new Thread(this);		//Starting new thread
+		thread = new Thread(this);		//creating new thread
 		thread.start();
 	}
 
@@ -142,7 +144,9 @@ public class Game extends Canvas implements Runnable {
 		int updates = 0;
 		int frames = 0;
 		long timer = System.currentTimeMillis();
+		
 		//Controlling the FPS in game across all device
+		//Main game loop, tick(), render()
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -165,7 +169,8 @@ public class Game extends Canvas implements Runnable {
 		stop();
 	}
 
-	//Created these two variable to move background image in cycle
+	//Created these two variable to move background image top to bottom
+	//Flying illusion
 	int ybg = 0;
 	int ybg2 = -((HEIGHT * 2));
 
@@ -192,10 +197,10 @@ public class Game extends Canvas implements Runnable {
 		
 		//Every time all the enemies are killed in one level, more enemies are created
 		if (enemy_killed >= enemy_count) {
-			enemy_count += 2;
-			enemy_killed = 0;	//So that we can compare above if condition
-			level++;
-			c.createEnemy(enemy_count);
+			enemy_count += 2;	//enemy added for new level
+			enemy_killed = 0;	//reseting enemy_killed back to 0 for that level
+			level++;		//each cycle will result new level
+			c.createEnemy(enemy_count);	//new level new enemies
 		}
 
 	}
@@ -205,20 +210,20 @@ public class Game extends Canvas implements Runnable {
 		
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
-			createBufferStrategy(3);		// We are rendering images in 3 Frames
+			createBufferStrategy(3);		// We are rendering images in 3 buffers
 			return;
 		}
 
 		Graphics g = bs.getDrawGraphics();
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-
+		//two background moving each other from top to bottom to top
 		g.drawImage(background, 30, ybg, null);
 		g.drawImage(background, 30, ybg2, null);
 
-		//animations during game time
+		//Animations during game time
 		if (State == STATE.GAME) {
-			//We are literally rotating two images so we can give that feel of flying
+			//We are literally cycling two images so we can give that feel of flying as in menu
 			g.drawImage(background1, 30, ybg, null);
 			g.drawImage(background1, 30, ybg2, null);
 			p.render(g);
@@ -233,7 +238,7 @@ public class Game extends Canvas implements Runnable {
 			g.fillRect(5, 5, 200, 20);
 
 			g.setColor(green);
-			g.fillRect(5, 5, HEALTH, 20);
+			g.fillRect(5, 5, HEALTH, 20);	//Health bar
 
 			g.setColor(white);
 			g.drawRect(5, 5, 200, 20);
@@ -253,7 +258,7 @@ public class Game extends Canvas implements Runnable {
 		} else if (State == STATE.MENU) {
 			menu.render(g);
 		} else if (State == STATE.HELP) {
-			Graphics2D g2d = (Graphics2D) g;
+			
 			Font fnt0 = new Font("arial", Font.BOLD, 59);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
@@ -262,38 +267,46 @@ public class Game extends Canvas implements Runnable {
 			Font fnt1 = new Font("Impact", Font.CENTER_BASELINE, 22);
 			g.setFont(fnt1);
 
-			g.drawString("Up: 		Up Arrow", (Game.WIDTH >> 1) + 100, 150);
-			g.drawString("Down: 	Down Arrow", (Game.WIDTH >> 1) + 100, 200);
-			g.drawString("Left: 	Left Arrow", (Game.WIDTH >> 1) + 100, 250);
-			g.drawString("Right: 	Right Arrow", (Game.WIDTH >> 1) + 100, 300);
+			g.drawString("Up: 		Up Arrow", (Game.WIDTH / 2) + 100, 150);
+			g.drawString("Down: 	Down Arrow", (Game.WIDTH / 2) + 100, 200);
+			g.drawString("Left: 	Left Arrow", (Game.WIDTH / 2) + 100, 250);
+			g.drawString("Right: 	Right Arrow", (Game.WIDTH / 2 ) + 100, 300);
 			g.drawString("Shoot: 	Space", (Game.WIDTH / 2) + 50, 350);
-
 			g.drawString("Pause: 	ESC", (Game.WIDTH / 2) + 200, 350);
+			
+			//Go Back button
+			Graphics2D g2d = (Graphics2D) g;
 			Rectangle backButton = new Rectangle(Game.WIDTH / 2 + 120, 380, 100, 50);
 			g.drawString("Go Back", backButton.x + 19, backButton.y + 30);
 			g2d.draw(backButton);
 
 		} else if (State == STATE.GAMEOVER) {
+			
+			Graphics2D g2d = (Graphics2D) g;
 			Rectangle restartGame = new Rectangle(Game.WIDTH / 2 + 120, 250, 100, 50);
 			Rectangle continueGame = new Rectangle(Game.WIDTH / 2 + 120, 150, 100, 50);
 
-			Graphics2D g2d = (Graphics2D) g;
 			Font fnt0 = new Font("arial", Font.BOLD, 59);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
 			g.drawString("GAME OVER", Game.WIDTH / 2, 100);
 
-			Font fnt1 = new Font("arial", Font.BOLD, 15);
-			g.setFont(fnt1);
+			fnt0 = new Font("arial", Font.BOLD, 15);
+			g.setFont(fnt0);
+			
 			g.drawString("Cont. : " + totalContinue, continueGame.x + 19, continueGame.y + 30);
 			g2d.draw(continueGame);
 			g.drawString("Main Menu", restartGame.x + 15, restartGame.y + 30);
 			g2d.draw(restartGame);
-			fnt1 = new Font("arial", Font.BOLD, 30);
-			g.setFont(fnt1);
+			
+			//Score
+			fnt0 = new Font("arial", Font.BOLD, 30);
+			g.setFont(fnt0);
 			g.drawString("Your Score : " + score, restartGame.x - 50, restartGame.y + 100);
-			fnt1 = new Font("arial", Font.BOLD, 50);
-			g.setFont(fnt1);
+			
+			//HighScore
+			fnt0 = new Font("arial", Font.BOLD, 50);
+			g.setFont(fnt0);
 			try {
 				g.drawString("High Score : " + highScore.getScore(), restartGame.x - 120, restartGame.y + 150);
 			} catch (IOException e) {
@@ -308,24 +321,24 @@ public class Game extends Canvas implements Runnable {
 			State = STATE.GAMEOVER;
 			HEALTH = 200;
 			if (oldHighScore < score) {
-				highScore.setScore(score);		//Always saving the user score after he dies in the game
+				highScore.setScore(score);		//Always save the user score after he dies in the game
 			}
 		}
 
 		//In case a player chose to restart the game from the beginning we setting everything default
 		if (State == STATE.RESTART) {
-			sound.stopGame();
+			sound.stopGameMusic();
 			score = 0; // to reset score after game over
-			level = 1;
+			level = 1;	// default level
 			enemy_count = 8; // to reset enemy count after game over
 			enemy_killed = 0; // to reset enemy killed after game over
-			ea.removeAll(ea); // clearing all player group
-			eb.removeAll(eb); // clearing all enemy group
+			ea.removeAll(ea); // clearing all bullets from the list
+			eb.removeAll(eb); // clearing all enemy group from the list
 			init(); // initializing all necessary variables/objects
 			State = STATE.MENU;
-			HEALTH = 200;
-
+			HEALTH = 200;	// Default health
 		}
+		
 		g.dispose();
 		bs.show();
 	}
@@ -335,26 +348,27 @@ public class Game extends Canvas implements Runnable {
 		int key = e.getKeyCode();
 		//Speed of player changes with level
 		if (State == STATE.GAME) {
+			
 			if (key == KeyEvent.VK_RIGHT) {
 				p.setVelX(4 + level * 0.5);	
 			} else if (key == KeyEvent.VK_LEFT) {
 				p.setVelX(-4 - level * 0.5);
-
 			} else if (key == KeyEvent.VK_DOWN) {
 				p.setVelY(4 + level * 0.5);
-
 			} else if (key == KeyEvent.VK_UP) {
 				p.setVelY(-4 - level * 0.5);
-			} else if (key == KeyEvent.VK_SPACE && !is_shooting) {
-				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));
+			} 
+			
+			else if (key == KeyEvent.VK_SPACE && !is_shooting) {
+				c.addEntity(new Bullet(p.getX(), p.getY(), tex, this));	//Creating bullet for each space
 				sound.playGunSound();			//Every space will produce gun sound
 				is_shooting = true;
 			} else if (key == KeyEvent.VK_ESCAPE) {
-				State = STATE.MENU;
+				State = STATE.MENU;		// Just go back to Menu (Pause the game) 
 			}
 		} else if (State == STATE.MENU) {
-			if (key == KeyEvent.VK_ESCAPE) {		//Escape will work as pause/start, nothing gets reset
-				State = STATE.GAME;
+			if (key == KeyEvent.VK_ESCAPE) {		
+				State = STATE.GAME;	// start new game or go back to game if it was paused
 			}
 		}
 	}
@@ -362,15 +376,13 @@ public class Game extends Canvas implements Runnable {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (State == STATE.GAME) {
-
+			// setting velX an velY back to 0, so it wont continue to move
 			if (key == KeyEvent.VK_RIGHT) {
 				p.setVelX(0);
 			} else if (key == KeyEvent.VK_LEFT) {
 				p.setVelX(0);
-
 			} else if (key == KeyEvent.VK_DOWN) {
 				p.setVelY(0);
-
 			} else if (key == KeyEvent.VK_UP) {
 				p.setVelY(0);
 			} else if (key == KeyEvent.VK_SPACE) {
@@ -385,7 +397,7 @@ public class Game extends Canvas implements Runnable {
 	//Creating new JFrame with pre-created dimension
 	public static void main(String[] args) {
 		Game game = new Game();
-
+		//Game dimension : 640 x 480
 		game.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		game.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		game.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));

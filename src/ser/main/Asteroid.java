@@ -9,12 +9,12 @@ import ser.main.interfaces.EntityB;
 
 public class Asteroid extends GameObject implements EntityB {
 
+	private Random r = new Random();	//to randomize speed and coordinates
+	
 	private Texture tex;
-	Random r = new Random();	//to randomize speed and coordinates
-
 	private Game game;
 	private Controller c;
-
+	private Sound sound;
 	private int speed = r.nextInt(3) + 1;
 
 	public Asteroid(double x, double y, Texture tex, Controller c, Game game) {
@@ -22,7 +22,7 @@ public class Asteroid extends GameObject implements EntityB {
 		this.tex = tex;
 		this.c = c;
 		this.game = game;
-		Physics.sound = game.getSound();	// passing same sound object from game
+		this.sound = game.getSound();
 	}
 
 	//updating all variables, speed depends on game Level
@@ -40,8 +40,9 @@ public class Asteroid extends GameObject implements EntityB {
 			EntityA playerGroup = game.ea.get(i);
 			//Detecting if enemy collides with and player group (bullet or player)
 			if (Physics.Collision(this, playerGroup)) {
-				c.removeEntity(playerGroup);
-				c.removeEntity(this);
+				sound.playExplosion();	//Playing explosion sound in case asteroid collides with bullet
+				c.removeEntity(playerGroup);	//removing bullet
+				c.removeEntity(this);		//removing asteroid
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
 
 			}

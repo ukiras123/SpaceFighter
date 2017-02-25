@@ -57,7 +57,7 @@ public class Sound {
 		boom.stop();
 	}
 
-	public void playGame() throws LineUnavailableException {
+	public void playGameMusic() throws LineUnavailableException {
 		if (gamePlaying == false) { // Validation check
 			gameClip = AudioSystem.getClip();
 			try {
@@ -73,7 +73,7 @@ public class Sound {
 		}
 	}
 
-	public void stopGame() {
+	public void stopGameMusic() {
 		gameClip.stop();
 		gamePlaying = false;
 	}

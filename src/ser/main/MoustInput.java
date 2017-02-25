@@ -19,14 +19,12 @@ public class MoustInput implements MouseListener {
 					Game.State = Game.STATE.GAME;
 				}
 			}
-
 			// Menu Button
 			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
 				if (my >= 250 && my <= 300) {
 					Game.State = Game.STATE.HELP;
 				}
 			}
-
 			// Quit Button
 			if (mx >= Game.WIDTH / 2 + 120 && mx <= Game.WIDTH / 2 + 220) {
 				if (my >= 350 && my <= 400) {

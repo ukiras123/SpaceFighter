@@ -9,14 +9,14 @@ import ser.main.interfaces.EntityB;
 
 public class Enemy extends GameObject implements EntityB {
 
+	private Random r = new Random();
 	private Texture tex;
-	Random r = new Random();
-
 	private Game game;
 	private Controller c;
 	private int level;
 	private int speed = r.nextInt(3) + 4 / 3;
 	private Player p;
+	private Sound sound;
 	
 	public Enemy(double x, double y, Texture tex, Controller c, Game game) {
 		super(x, y);
@@ -25,7 +25,7 @@ public class Enemy extends GameObject implements EntityB {
 		this.game = game;
 		p = game.getPlayer();
 		level = game.getLevel();
-		Physics.sound = game.getSound();	// passing same sound object from game
+		this.sound = game.getSound();	// passing same sound object from game
 	}
 
 	// updating variables, speed of enemy depends on level
@@ -43,8 +43,9 @@ public class Enemy extends GameObject implements EntityB {
 			EntityA playerGroup = game.ea.get(i);
 			//Detecting if enemy collides with and player group (bullet or player)
 			if (Physics.Collision(this, playerGroup)) {
-				c.removeEntity(playerGroup);
-				c.removeEntity(this);
+				sound.playExplosion(); //Playing explosion sound in case enemy collides with bullet
+				c.removeEntity(playerGroup);	//remove bullet
+				c.removeEntity(this);	//remove enemy
 				game.updateScore(); // adding score in case enemy is killed
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
 			}

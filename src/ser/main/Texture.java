@@ -3,7 +3,7 @@ package ser.main;
 import java.awt.image.BufferedImage;
 
 public class Texture {
-
+	
 	public BufferedImage mainPlayer;
 	public BufferedImage[] missile = new BufferedImage[3];
 	public BufferedImage[] enemy = new BufferedImage[5];
@@ -11,7 +11,7 @@ public class Texture {
 	public BufferedImage[] players = new BufferedImage[4];
 
 	private SpriteSheet ss;
-	Game game;
+	private Game game;
 
 	public Texture(Game game) {
 		ss = new SpriteSheet(game.getSpriteSheet());
