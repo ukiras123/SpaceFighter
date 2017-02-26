@@ -7,7 +7,7 @@ import java.util.Random;
 import ser.main.interfaces.EntityA;
 import ser.main.interfaces.EntityB;
 
-//Enemy Class
+//Enemy 
 public class Enemy extends GameObject implements EntityB {
 
 	private Random r = new Random();
