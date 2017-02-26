@@ -310,7 +310,7 @@ public class Game extends Canvas implements Runnable {
 			g.drawString("Your Score : " + score, restartGame.x - 50, restartGame.y + 100);
 			
 			//HighScore
-			fnt0 = new Font("arial", Font.BOLD, 50);
+			fnt0 = new Font("arial", Font.BOLD, 35);
 			g.setFont(fnt0);
 			try {
 				g.drawString("High Score : " + highScore.getScore(), restartGame.x - 120, restartGame.y + 150);
