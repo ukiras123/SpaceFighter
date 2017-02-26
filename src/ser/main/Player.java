@@ -17,13 +17,14 @@ public class Player extends GameObject implements EntityA {
 	private Game game;
 	private Controller controller;
 	private int randomPlayer;
-	
+	private Sound sound;
 	public Player(double x, double y, Texture tex, Game game, Controller controller) {
 		super(x, y);
 		this.tex = tex;
 		this.game = game;
 		this.controller = controller;
 		randomPlayer = rand.nextInt(5);	//to choose random player, we have 5 players 
+		this.sound = game.getSound();
 	}
 
 	// updating variables
@@ -48,6 +49,7 @@ public class Player extends GameObject implements EntityA {
 				controller.removeEntity(enemyGroup);
 				Game.HEALTH -= 20;			// This will decrease heal bar. Total player life available = 200/20 = 10
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
+				sound.playHitSound();		// Sound when player gets hit by enemy
 			}
 
 		}

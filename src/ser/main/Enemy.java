@@ -46,7 +46,7 @@ public class Enemy extends GameObject implements EntityB {
 				sound.playExplosion(); //Playing explosion sound in case enemy collides with bullet
 				c.removeEntity(playerGroup);	//remove bullet
 				c.removeEntity(this);	//remove enemy
-				game.updateScore(); // adding score in case enemy is killed
+				game.updateScore(100*level); // adding score in case enemy is killed
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
 			}
 		}

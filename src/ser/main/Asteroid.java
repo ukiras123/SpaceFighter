@@ -43,7 +43,7 @@ public class Asteroid extends GameObject implements EntityB {
 				sound.playExplosion();	//Playing explosion sound in case asteroid collides with bullet
 				c.removeEntity(playerGroup);	//removing bullet
 				c.removeEntity(this);		//removing asteroid
-				game.updateScore(); // adding score in case enemy is killed
+				game.updateScore(10*game.getLevel()); // adding score in case enemy is killed
 				game.setEnemy_killed(game.getEnemy_killed() + 1);
 
 			}

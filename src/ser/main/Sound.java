@@ -13,8 +13,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Sound {
-	private URL url1, url2, url3;
-	private AudioClip gun, boom;
+	private URL url1, url2, url3, url4;
+	private AudioClip gun, boom, hit;
 
 	private Clip gameClip;
 	private AudioInputStream game; // for Game Music we have to do this way so that we
@@ -27,9 +27,11 @@ public class Sound {
 		url1 = Sound.class.getResource("/laserSound.wav");
 		url2 = Sound.class.getResource("/boom.wav");
 		url3 = Sound.class.getResource("/adventure.wav");
+		url4 = Sound.class.getResource("/hit.wav");
 
 		gun = Applet.newAudioClip(url1);
 		boom = Applet.newAudioClip(url2);
+		hit = Applet.newAudioClip(url4);
 
 		try {
 			game = AudioSystem.getAudioInputStream(url3);
@@ -63,6 +65,13 @@ public class Sound {
 		gun.stop();
 	}
 
+	public void playHitSound() {
+		hit.play();
+	}
+
+	public void stopHitSound() {
+		hit.stop();
+	}
 	public void playExplosion() {
 		boom.stop();
 		boom.play();

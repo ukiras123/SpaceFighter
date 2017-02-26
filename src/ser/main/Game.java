@@ -248,14 +248,13 @@ public class Game extends Canvas implements Runnable {
 
 			g.setColor(white);
 			g.drawRect(5, 5, 200, 20);
-
-			g.setColor(grey);
-			g.fillRect(WIDTH * 2 - 77, 5, 80, 20);
+			g.drawString("Life : " + totalContinue, 5, 40);
 
 			Font fnt0 = new Font("arial", Font.BOLD, 13);
 			g.setFont(fnt0);
 			g.setColor(Color.white);
-			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 2 - 75, 20);
+			g.drawString("Score : " + String.valueOf(getScore()), WIDTH * 2 - 100, 20);
+
 
 			fnt0 = new Font("Monaco", Font.BOLD, 20);
 			g.setFont(fnt0);
@@ -326,7 +325,7 @@ public class Game extends Canvas implements Runnable {
 		if (HEALTH <= 0) {
 			State = STATE.GAMEOVER;
 			HEALTH = 200;
-			p.setVelX(0);		// Rest Player spped back to 0
+			p.setVelX(0);		// Rest Player speed back to 0
 			p.setVelY(0);
 			try {
 				if (highScore.getScore() < score) {
@@ -343,6 +342,7 @@ public class Game extends Canvas implements Runnable {
 			level = 1;	// default level
 			enemy_count = 8; // to reset enemy count after game over
 			enemy_killed = 0; // to reset enemy killed after game over
+			totalContinue = 3; // Restarting life back to 3
 			ea.clear(); // clearing all bullets from the list
 			eb.clear(); // clearing all enemy group from the list
 			c.createEnemy(enemy_count); //Creating new enemies to start the game
@@ -479,8 +479,8 @@ public class Game extends Canvas implements Runnable {
 		Game.totalContinue = totalContinue;
 	}
 	
-	public void updateScore() {		//updating score for enemy killed 
-		this.score += 1;
+	public void updateScore(int x) {		//updating score for enemy killed 
+		this.score += x;
 	}
 
 	public int getScore() {
