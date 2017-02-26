@@ -35,7 +35,7 @@ public class Enemy extends GameObject implements EntityB {
 
 		//in case enemy goes out of frame, again getting it back to the top
 		if (y > Game.HEIGHT * Game.SCALE) {
-			setX(r.nextInt(640));	// basic AI logic
+			setExplicitX(r.nextInt(640));	// basic AI logic, randomize the fall again
 			y = -5;
 		}
 
@@ -93,6 +93,10 @@ public class Enemy extends GameObject implements EntityB {
 		} else {
 			this.x += 0.5;
 		}
+	}
+	
+	public void setExplicitX(double x) {
+		this.x = x;
 	}
 
 }
