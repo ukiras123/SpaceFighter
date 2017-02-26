@@ -299,7 +299,7 @@ public class Game extends Canvas implements Runnable {
 			fnt0 = new Font("arial", Font.BOLD, 15);
 			g.setFont(fnt0);
 			
-			g.drawString("Cont. : " + totalContinue, continueGame.x + 19, continueGame.y + 30);
+			g.drawString("Life : " + totalContinue, continueGame.x + 19, continueGame.y + 30);
 			g2d.draw(continueGame);
 			g.drawString("Main Menu", restartGame.x + 15, restartGame.y + 30);
 			g2d.draw(restartGame);
