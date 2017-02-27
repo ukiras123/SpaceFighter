@@ -8,7 +8,7 @@
 
 # UML diagram:
 
-https://github.com/ukiras123/SpaceFighter/blob/master/UML.jpg
+![alt tag] (https://github.com/ukiras123/SpaceFighter/blob/master/UML.jpg)
 
 
 Thanks to https://www.youtube.com/channel/UCOs7Q7IeuzgRyARaEqif75A
